@@ -17,7 +17,7 @@
 					<div class="glide__track" data-glide-el="track">
 						<ul class="glide__slides">
 							<li class="glide__slide"><a href="#"> <img
-									src="https://cdn.shopify.com/s/files/1/0603/3031/1875/files/DM9036-104_Web_Desktop_2x_09a49662-b717-4fa5-99bc-78363bcd669c_1950x.jpg?v=1660883430"
+									src="resources/images/banner_1.jpg"
 									alt="" />
 							</a></li>
 							<li class="glide__slide"><a href="#"> <img
