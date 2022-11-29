@@ -1,0 +1,101 @@
+.login {
+	color: #5e5c5c;
+}
+
+.login-wrapper {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 6rem;
+	text-align: center;
+}
+
+.login-title {
+	display: inline-block;
+	color: #000;
+	position: relative;
+	margin-bottom: 1rem;
+	font-size: 3rem;
+	letter-spacing: 2px;
+}
+
+.login-title::after {
+	content: '';
+	position: absolute;
+	top: 110%;
+	left: 50%;
+	transform: translatex(-50%);
+	width: 80%;
+	height: 2px;
+	background-color: #aaaaaa;
+}
+
+.login-method-wrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 0.8rem;
+	margin-top: 3rem;
+}
+
+.login-method-item {
+	padding: 0.6rem;
+	border-radius: 50%;
+	border: 1px solid #ccc;
+	transition: all 0.3s ease-in-out;
+}
+
+.login-method-item:hover {
+	background-color: #fefbf6;
+}
+
+.login-method-item i {
+	font-size: 2rem;
+	color: #111111;
+}
+
+.login .divider {
+	margin: 3rem 0;
+	position: relative;
+}
+
+.login .divider .line {
+	height: 1px;
+	background-color: #000;
+}
+
+.login .divider .or {
+	position: absolute;
+	padding: 0 2rem;
+	background-color: #fff;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.login form {
+	max-width: 500px;
+	margin: 2rem auto;
+	gap: 2rem;
+	display: flex;
+	flex-direction: column;
+}
+
+.login form input:not([type='radio']) {
+	width: 100%;
+}
+
+.login form .button[type='submit'] {
+	margin-top: 2rem;
+	padding: 1.8rem 3rem;
+}
+
+.login .more-options {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.login .more-options a {
+	color: inherit;
+}

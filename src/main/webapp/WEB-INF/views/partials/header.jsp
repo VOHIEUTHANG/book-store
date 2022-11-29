@@ -18,7 +18,7 @@
 					</div>
 					<div class="col">
 						<div class="logo-wrapper wow flipInY">
-							<a href="/" class="main-logo"> <span> Bookstore</span>
+							<a href="<c:url value='/index.htm'/>" style="display:flex;justify-content:center;" class="main-logo"> <span> Bookstore</span>
 							</a>
 						</div>
 					</div>
@@ -26,7 +26,7 @@
 						<div class="nav-wrapper">
 							<ul class="nav-list">
 								<li class="nav-item user-section"><a class="nav-link"
-									href="/login"><i class="fa-regular fa-user"></i></a></li>
+									href="<c:url value='/login.htm'/>"><i class="fa-regular fa-user"></i></a></li>
 							</ul>
 						</div>
 					</div>
