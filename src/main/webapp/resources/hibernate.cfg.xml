@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+ 
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database setting -->
+        <property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="connection.url">jdbc:sqlserver://localhost:1433</property>
+        <property name="connection.username">devostack</property>
+        <property name="connection.password">0123123123</property>
+         
+        <!-- JDBC connection pool (use the built-in) -->
+        <property name="connection.pool_size">4</property>
+ 
+        <!-- SQL dialect -->
+        <property name="dialect">org.hibernate.dialect.SQLServerDialect</property>
+ 
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+ 
+        <!-- Disable the second-level cache -->
+        <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+ 
+        <!-- Show all executed SQL to console -->
+        <property name="show_sql">true</property>
+         
+        <!-- Automatically validates or exports schema DDL to the database when the SessionFactory is created -->
+        <!-- validate, create, update, create-drop -->
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
+ 
+        <!-- Entity mapping -->
+        <mapping class="app.entity.Staff" />
+         
+    </session-factory>
+</hibernate-configuration>
