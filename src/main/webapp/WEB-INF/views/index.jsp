@@ -17,28 +17,19 @@
 					<div class="glide__track" data-glide-el="track">
 						<ul class="glide__slides">
 							<li class="glide__slide"><a href="#"> <img
-									src="resources/images/banner_1.jpg"
-									alt="" />
+									src="resources/images/banner/banner_1.jpg" alt="" />
 							</a></li>
 							<li class="glide__slide"><a href="#"> <img
-									src="https://cdn.shopify.com/s/files/1/0603/3031/1875/files/Web_Desktop_2x_15d4d2e9-e527-4ad9-b787-82f98cff873b_1950x.jpg?v=1660272572"
-									alt="" />
+									src="resources/images/banner/banner_2.jpg" alt="" />
 							</a></li>
 							<li class="glide__slide"><a href="#"> <img
-									src="https://cdn.shopify.com/s/files/1/0603/3031/1875/files/0715_ct8532-105_web_03_1512x.jpg?v=1657880022"
-									alt="" />
+									src="resources/images/banner/banner_3.jpg" alt="" />
 							</a></li>
 							<li class="glide__slide"><a href="#"> <img
-									src="https://cdn.shopify.com/s/files/1/0603/3031/1875/files/0715_BB550WT1_web_03_1512x.jpg?v=1657880102"
-									alt="" />
+									src="resources/images/banner/banner_4.jpg" alt="" />
 							</a></li>
 							<li class="glide__slide"><a href="#"> <img
-									src="https://cdn.shopify.com/s/files/1/0603/3031/1875/files/Web_Desktop_2x_d7775c58-a3f5-4e05-b95c-00a19e19a32d_1950x.jpg?v=1657879961"
-									alt="" />
-							</a></li>
-							<li class="glide__slide"><a href="#"> <img
-									src="https://cdn.shopify.com/s/files/1/0603/3031/1875/files/Web_Desktop_2x_e9224153-8aa8-400e-a3ce-00a2621e5d8e_1950x.jpg?v=1658485552"
-									alt="" />
+									src="resources/images/banner/banner_5.jpg" alt="" />
 							</a></li>
 						</ul>
 					</div>
@@ -55,6 +46,8 @@
 						<button class="glide__bullet" data-glide-dir="=0"></button>
 						<button class="glide__bullet" data-glide-dir="=1"></button>
 						<button class="glide__bullet" data-glide-dir="=2"></button>
+						<button class="glide__bullet" data-glide-dir="=3"></button>
+						<button class="glide__bullet" data-glide-dir="=4"></button>
 					</div>
 				</div>
 			</div>

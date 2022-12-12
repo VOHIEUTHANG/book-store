@@ -2,9 +2,9 @@ package app.service;
 
 import java.util.List;
 
+import app.commons.UserResponse;
 import app.dao.UserDao;
 import app.entity.User;
-import app.response.UserResponse;
 import app.utils.PasswordHandler;
 
 public class UserService {
@@ -19,13 +19,11 @@ public class UserService {
 		PasswordHandler passHandler = new PasswordHandler();
 		
 		String hashPassword = passHandler.getHashPassword(password);
-		System.out.println(hashPassword);
 
 		List<User> users = userdao.getUserByUsername(username);
 		if (users.size() > 0) {
 			User user = users.get(0);
 			String currentHashPassword = user.getPassword();
-			System.out.println(currentHashPassword);
 			Boolean isTruePassword = passHandler.checkPassword(password, currentHashPassword);
 
 			if (isTruePassword) {
