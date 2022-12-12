@@ -1,6 +1,7 @@
 <script src="resources/libs/swipper.min.js"></script>
 <script src="resources/libs/boostrap.min.js"></script>
 <script src="resources/libs/justValidate.min.js"></script>
+<script src="resources/libs/axios.min.js"></script>
 <script src="resources/libs/popper.min.js"></script>
 <script src="resources/libs/tippy.min.js"></script>
 <script src="resources/libs/toastr.min.js"></script>

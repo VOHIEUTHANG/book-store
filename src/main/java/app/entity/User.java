@@ -167,6 +167,14 @@ public class User {
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", fullName=" + fullName + ", email=" + email
+				+ ", phoneNumber=" + phoneNumber + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", avatar="
+				+ avatar + ", gender=" + gender + ", isActive=" + isActive + ", createAt=" + createAt
+				+ ", deliverAddress=" + deliverAddress + ", comments=" + comments + ", carts=" + carts + ", orders="
+				+ orders + ", product_wishlist=" + product_wishlist + "]";
+	}
 	
 	
 	

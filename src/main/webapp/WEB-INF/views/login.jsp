@@ -32,7 +32,7 @@
 						<div class="or">OR</div>
 					</div>
 					<div style="text-transform: initial">Đăng nhập với tài khoản:</div>
-					<form action="/api/user/login" id="form-login" method="post">
+					<form action="user/login.htm" id="form-login" method="post">
 						<div class="row form-container">
 							<div class="col-12">
 								<input class="input-feild" id="username" name="username"
@@ -56,41 +56,5 @@
 		<jsp:include page="./partials/footer.jsp" />
 	</div>
 	<jsp:include page="./partials/external_foot.jsp" />
-	<script type="module">
-	  import { getFormData } from '/BooksStore/resources/js/utils.js';
-	  const validate = new window.JustValidate('#form-login');
-      validate
-         .addField('#username', [
-            {
-               rule: 'required',
-               errorMessage: 'Không được để trống tên đăng nhập !',
-            },
-         ])
-         .addField('#password', [
-            {
-               rule: 'required',
-               errorMessage: 'Không được để trống mật khẩu !',
-            },
-         ])
-         .onSuccess(async (event) => {
-            const formData = getFormData(event.target);
-            try {
-               const { data, status } = await axios.post('/api/user/login', formData);
-               console.log({ data, status });
-               if (status === 200) {
-                  const { title, message } = data;
-                  if (title === 'success') {
-                     const tokens = data.payload;
-                     localStorage.setStore(tokens);
-                     window.location.href = '/';
-                  } else {
-                     toastr[title](message);
-                  }
-               }
-            } catch (error) {
-               toastr.error('Xảy ra lỗi khi gửi request về server !', error);
-            }
-         });
-	</script>
 </body>
 </html>
