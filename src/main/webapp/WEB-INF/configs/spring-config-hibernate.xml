@@ -9,7 +9,7 @@
 			http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<!-- Kết nối CSDL -->
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" p:url="jdbc:sqlserver://localhost:1433; Database=BookStore" p:username="devostack" p:password="0123123123"></bean>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" p:driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" p:url="jdbc:sqlserver://localhost:1433; Database=BookStore" p:username="devostack" p:password="123123123"></bean>
 
 	<!-- Cấu hình Hibernate -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

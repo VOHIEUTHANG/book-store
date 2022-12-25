@@ -17,6 +17,7 @@ import app.entity.Order;
 import app.entity.OrderItem;
 import app.entity.Product;
 import app.entity.ProductImage;
+import app.entity.Publisher;
 import app.entity.Role;
 import app.entity.User;
 
@@ -31,7 +32,7 @@ public class hibernateUtils {
 				settings.put(Environment.DRIVER, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
 				settings.put(Environment.URL, "jdbc:sqlserver://localhost:1433;databaseName=BookStore");
 				settings.put(Environment.USER, "devostack");
-				settings.put(Environment.PASS, "0123123123");
+				settings.put(Environment.PASS, "123123123");
 				settings.put(Environment.DIALECT, "org.hibernate.dialect.SQLServerDialect");
 				settings.put(Environment.SHOW_SQL, "false");
 				settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
@@ -48,6 +49,7 @@ public class hibernateUtils {
 				configuration.addAnnotatedClass(ProductImage.class);
 				configuration.addAnnotatedClass(Role.class);
 				configuration.addAnnotatedClass(User.class);
+				configuration.addAnnotatedClass(Publisher.class);
 				ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 						.applySettings(configuration.getProperties()).build();
 				sessionFactory = configuration.buildSessionFactory(serviceRegistry);

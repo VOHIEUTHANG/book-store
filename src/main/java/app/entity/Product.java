@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,48 +28,72 @@ public class Product {
 	@Column(nullable = false)
 	private String name;
 	@Column(nullable = false)
-	private String thumbnail;
-	@Column(nullable = false)
 	private int price;
 	@Column(columnDefinition = "int default 0")
 	private int discountPercent;
-	@Column 
+	@Column
 	private int publicYear;
-	@Column (nullable = false)
+	@Column(nullable = false)
 	private int inventory;
 	@Column
-	private String publisher;
-	@Column
 	private String description;
-	@Column 
+	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createAt;
 	@Column(columnDefinition = "bit default 0")
 	private Boolean isDeleted;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "authorId")
 	private Author author;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "categoryId")
 	private Category category;
 	
-	@OneToMany(mappedBy = "product_image", fetch=FetchType.EAGER)
+	@ManyToOne
+	@JoinColumn(name = "publisherId")
+	private Publisher publisher;
+
+	@OneToMany(mappedBy = "product_image", fetch = FetchType.EAGER)
 	private List<ProductImage> images = new ArrayList<>();
-	
-	@OneToMany(mappedBy="product_cart", fetch = FetchType.EAGER)
+
+	@OneToMany(mappedBy = "product_cart", fetch = FetchType.EAGER)
 	private List<Cart> carts = new ArrayList<>();
-	
-	@OneToMany(mappedBy="product_comment", fetch = FetchType.EAGER)
+
+	@OneToMany(mappedBy = "product_comment", fetch = FetchType.EAGER)
 	private List<Comment> comments = new ArrayList<>();
-	
-	@OneToMany(mappedBy="product_orderItem", fetch = FetchType.EAGER)
+
+	@OneToMany(mappedBy = "product_orderItem", fetch = FetchType.EAGER)
 	private List<OrderItem> orderItems = new ArrayList<>();
-	
+
 	@ManyToMany(mappedBy = "product_wishlist")
 	Set<User> usersHaveWishList = new HashSet<>();
+
+	public Product() {
+	}
+
+	public Product(String name, int price, Author author, Category category,
+			Publisher publisher) {
+			this.id = UUID.randomUUID().toString();
+			this.name = name;
+			this.price = price;
+			this.createAt = new Date(System.currentTimeMillis());
+			this.author = author;
+			this.category = category;
+			this.inventory = 100;
+			this.publisher = publisher;
+			this.isDeleted = false;
+	}
 	
+	public Publisher getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(Publisher publisher) {
+		this.publisher = publisher;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -85,17 +110,8 @@ public class Product {
 		this.name = name;
 	}
 
-	public String getThumbnail() {
-		return thumbnail;
-	}
-
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
-
 	public int getPrice() {
 		return price;
-		
 	}
 
 	public void setPrice(int price) {
@@ -126,14 +142,6 @@ public class Product {
 		this.inventory = inventory;
 	}
 
-	public String getPublisher() {
-		return publisher;
-	}
-
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -161,7 +169,6 @@ public class Product {
 	public Author getAuthor() {
 		return author;
 	}
-
 
 	public Category getCategory() {
 		return category;
@@ -214,6 +221,5 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
-	
+
 }

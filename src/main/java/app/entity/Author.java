@@ -37,6 +37,14 @@ public class Author {
 	
 	@OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
 	private Collection<Product> products;
+	
+	public Author() {
+		
+	}
+	
+	public Author(String authorName) {
+		this.authorName = authorName;
+	}
 
 	public int getId() {
 		return id;

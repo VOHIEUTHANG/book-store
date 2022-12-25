@@ -13,24 +13,32 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class Category {
-
+public class Publisher {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(nullable = false, updatable = false)
 	private int id;
 	@Column(nullable = false)
-	private String categoryName;
+	private String publisherName;
 	
-	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "publisher", fetch = FetchType.EAGER)
 	private Collection<Product> products;
 	
-	public Category() {}
-
-	public Category(String categoryName) {
-		this.categoryName = categoryName;
-	}
 	
+	public String getPublisherName() {
+		return publisherName;
+	}
+
+	public void setPublisherName(String publisherName) {
+		this.publisherName = publisherName;
+	}
+
+	public Publisher() {}
+	
+	public Publisher(String publisherName) {
+		this.publisherName = publisherName;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -39,20 +47,12 @@ public class Category {
 		this.id = id;
 	}
 
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
-
 	public Collection<Product> getProducts() {
 		return products;
 	}
 
 	public void setProducts(Collection<Product> products) {
 		this.products = products;
-	}	
-	
+	}
+
 }

@@ -1,3 +1,4 @@
+<script src="resources/js/global.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/themify-icons@1.0.0/index.min.js"></script>
 <script src="resources/libs/swipper.min.js"></script>
 <script src="resources/libs/boostrap.min.js"></script>

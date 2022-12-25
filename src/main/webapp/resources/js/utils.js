@@ -8,4 +8,6 @@ const getFormData = (formElement) => {
    }
    return formData;
 };
-export {getFormData};
+
+const SUBDOMAIN = "Bookstore"; 
+export {getFormData, SUBDOMAIN};

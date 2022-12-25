@@ -1,9 +1,12 @@
 package app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import app.commons.UserResponse;
+import app.dao.RoleDao;
 import app.dao.UserDao;
+import app.entity.Role;
 import app.entity.User;
 import app.utils.PasswordHandler;
 
@@ -42,16 +45,55 @@ public class UserService {
 		return res;
 	}
 	
-	public Boolean registerUser(User user) throws Exception {
-		PasswordHandler passHandler = new PasswordHandler();
-		String hashPassword = passHandler.getHashPassword(user.getPassword());
-		user.setPassword(hashPassword);
+	public UserResponse registerUser(User user) throws Exception {
+		Role role = this.getUserRole();
+		user.setRole(role); //set role user
 		
-		Boolean insertStatus = userdao.insert(user);
+		user.setAvatar("resources/images/default-avatar.png");
 		
-		return insertStatus;
+		List<User> users = userdao.getUserByUsername(user.getUsername());
+		UserResponse res = new UserResponse();
+		
+		if(users.size() <= 0) {
+			PasswordHandler passHandler = new PasswordHandler();
+			String hashPassword = passHandler.getHashPassword(user.getPassword());
+			user.setPassword(hashPassword);
+			
+			String username = userdao.insert(user);
+			
+			System.out.println("username: " + username);
+			
+			if(username.length() > 0) {	
+				List<User> targetUser = userdao.getUserByUsername(username);
+				res.setUser(targetUser.get(0));
+				res.setMessage("Đăng ký thành công !");
+				res.setStatus(true);
+			}else {
+				res.setMessage("Đăng ký thất bại !");
+				res.setStatus(false);
+			}
+		}else {
+			res.setMessage("Tên đăng nhập đã được sử dụng !");
+			res.setStatus(false);
+		}
+		
+		return res;
 	}
 	
+	
+	public Boolean updateUser(User user) throws Exception {
+		Boolean updateStatus = userdao.update(user);
+		return updateStatus;
+	}
+	
+	public Role getUserRole(){
+		RoleDao roleDao = new RoleDao();
+		List<Role> roles  = roleDao.getUserRole();
+		if(roles.size() > 0) {
+			return roles.get(0);
+		}
+		return null;
+	}
 	
 
 }

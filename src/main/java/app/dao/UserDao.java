@@ -3,6 +3,8 @@ package app.dao;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -36,11 +38,29 @@ public class UserDao {
 		return users;
 	}
 	
-	public Boolean insert(User user) {
+	public String insert(User user) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			session.save(user);
+			String username = (String) session.save(user);
+			t.commit();
+			return username;
+		} catch (Exception e) {
+			System.out.print(e);
+			t.rollback();
+			return "";
+		}
+		finally {
+			session.close();
+		}
+	}
+	
+	public Boolean update(User user) {
+		Session session = (Session) factory.openSession();
+		User updateUser = (User) session.merge(user);
+		Transaction t = session.beginTransaction();
+		try {
+			session.update(updateUser);
 			t.commit();
 			return true;
 		} catch (Exception e) {

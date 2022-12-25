@@ -41,13 +41,14 @@
 							</div>
 							<div class="col-12">
 								<input class="input-feild" placeholder="Tên đăng nhập"
-									type="text" id="userName" name="userName" />
+									type="text" id="userName" name="username" />
 							</div>
 							<div class="col">
 								<input class="input-feild" placeholder="Mật khẩu"
 									type="password" id="password" name="password" />
 							</div>
 							<button type="submit" class="button button-full">REGISTER</button>
+							<p id="error-message" class="text-danger just-validate-error-label"></p>
 						</div>
 					</form>
 					<div class="more-options">
@@ -131,14 +132,26 @@
                },
             ])
             .onSuccess(async (event) => {
-               const formData = getFormData(event.target);
+               const data = getFormData(event.target);
+				const formData = new FormData();
+				formData.append(
+                    'userInfo',
+                    JSON.stringify(data),
+                 );
                try {
-                  const { data, status } = await axios.post('/api/user/register', formData);
+                  const { data, status } = await axios.post('/BooksStore/user/register.htm', formData,
+					{ headers: { 'Content-Type': 'application/json; charset=utf-8'} });
                   if (status === 200) {
-                     const { status, message } = data;
-                     toastr[status](message);
-                  }
+                     const {status, message}  = data;
+					if(status){
+					//back to the home page
+					$(".main-logo")[0].click();
+                  }else{
+					$("#error-message").text(message);
+				  }
+				}
                } catch (error) {
+				  console.log(error);
                   toastr.error('Xảy ra lỗi khi gửi request về server !');
                }
             });

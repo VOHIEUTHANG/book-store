@@ -71,6 +71,19 @@ public class User {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "Wishlist", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "product"))
 	private Set<Product> product_wishlist = new HashSet<>();
+		
+	public User(String username, String password, String fullName, String email, String phoneNumber, 
+			Date createAt) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.fullName = fullName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.createAt = createAt;
+	}
+	
+	public User() {}
 
 	public String getUsername() {
 		return username;
