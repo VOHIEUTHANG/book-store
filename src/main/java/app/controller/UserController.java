@@ -70,11 +70,16 @@ public class UserController {
 
 			session.setAttribute("user", currentUser);
 			session.setAttribute("userEntity", user);
-			return "index";
+			
+			if(user.getRole().getRole().equals("USER")) {
+				return "redirect:/index.htm";				
+			}else if(user.getRole().getRole().equals("ADMIN")) {
+				return "redirect:/admin/home.htm";	
+			}
 		}
 
 		model.addAttribute("response", res);
-
+		
 		return "login";
 	}
 

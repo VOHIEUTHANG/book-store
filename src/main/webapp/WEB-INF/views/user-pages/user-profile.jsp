@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <base href="${pageContext.servletContext.contextPath}/" />
-<title>HOME PAGE</title>
+<title>User Profile</title>
 <jsp:include page="../partials/external_head.jsp" />
 <link rel="stylesheet" href="resources/css/login.css">
 <link rel="stylesheet" href="resources/css/profile.css">

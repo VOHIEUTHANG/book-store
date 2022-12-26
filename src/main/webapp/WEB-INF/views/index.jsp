@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,7 @@
 							<li class="glide__slide"><a href="#"> <img
 									src="resources/images/banner/banner_1.jpg" alt="" />
 							</a></li>
+
 							<li class="glide__slide"><a href="#"> <img
 									src="resources/images/banner/banner_2.jpg" alt="" />
 							</a></li>
@@ -61,73 +63,29 @@
 							<div class="glide category-product">
 								<div class="glide__track" data-glide-el="track">
 									<ul class="glide__slides">
-										<li class="glide__slide">
-											<div class="category-item wow fadeInLeft">
-												<a href="#" class="product-link">
-													<div class="category__image">
-														<img
-															src="https://cf.shopee.vn/file/a9c5a715c3afa17f3b50177c5289e1c3"
-															alt="" />
-													</div>
-												</a>
-												<div class="category__desc">
-													<a href="#">
-														<div class="category__brand">brand name</div>
-													</a> <a href="#">
-														<div class="category__name">book name</div>
+										<c:forEach var="p" items="${newestProduct}" varStatus="status">
+											<li class="glide__slide">
+												<div class="category-item wow fadeInLeft">
+													<a href="#" class="product-link">
+														<div class="category__image">
+															<img src="${p.images.get(0).imageURL}" alt="" />
+														</div>
 													</a>
-													<div class="category__price">
-														GIÁ <span class="remove">1.200.000 VND</span> <span>1.100.000
-															VND</span>
+													<div class="category__desc">
+														<a href="#">
+															<div class="category__brand">${p.author.authorName}</div>
+														</a> <a href="#">
+															<div class="category__name">${p.name}</div>
+														</a>
+														<div class="category__price">
+															<span>Giá: ${p.price * (100-p.discountPercent)/100}.000
+																VND</span>
+														</div>
 													</div>
+													<div class="category__foot" style="height: 1rem"></div>
 												</div>
-												<div class="product-discount-label">-12%</div>
-												<div class="category__foot" style="height: 1rem"></div>
-											</div>
-										</li>
-										<li class="glide__slide">
-											<div class="category-item wow fadeInLeft">
-												<a href="#" class="product-link">
-													<div class="category__image">
-														<img src="https://picsum.photos/500/300?random=9" alt="" />
-													</div>
-												</a>
-												<div class="category__desc">
-													<a href="#">
-														<div class="category__brand">brand name</div>
-													</a> <a href="#">
-														<div class="category__name">book name</div>
-													</a>
-													<div class="category__price">
-														GIÁ <span class="remove">1.200.000 VND</span> <span>1.100.000
-															VND</span>
-													</div>
-												</div>
-												<div class="product-discount-label">-12%</div>
-												<div class="category__foot" style="height: 1rem"></div>
-											</div>
-										</li>
-										<li class="glide__slide">
-											<div class="category-item wow fadeInLeft">
-												<a href="#" class="product-link">
-													<div class="category__image">
-														<img src="https://picsum.photos/500/300?random=11" alt="" />
-													</div>
-												</a>
-												<div class="category__desc">
-													<a href="#">
-														<div class="category__brand">brand name</div>
-													</a> <a href="#">
-														<div class="category__name">book name</div>
-													</a>
-													<div class="category__price">
-														GIÁ <span>1.100.000 VND</span>
-													</div>
-												</div>
-
-												<div class="category__foot" style="height: 1rem"></div>
-											</div>
-										</li>
+											</li>
+										</c:forEach>
 									</ul>
 								</div>
 								<div class="glide__arrows" data-glide-el="controls">
@@ -151,34 +109,14 @@
 					<div class="glide brand-logo-wrapper">
 						<div class="brand-logo-active glide__track" data-glide-el="track">
 							<div class="glide__slides">
-								<div class="single-brand glide__slide">
-									<a href="#"><img
-										src="https://picsum.photos/500/300?random=1" alt="" /></a>
-								</div>
-								<div class="single-brand glide__slide">
-									<a href="#"><img
-										src="https://picsum.photos/500/300?random=2" alt="" /></a>
-								</div>
-								<div class="single-brand glide__slide">
-									<a href="#"><img
-										src="https://picsum.photos/500/300?random=3" alt="" /></a>
-								</div>
-								<div class="single-brand glide__slide">
-									<a href="#"><img
-										src="https://picsum.photos/500/300?random=4" alt="" /></a>
-								</div>
-								<div class="single-brand glide__slide">
-									<a href="#"><img
-										src="https://picsum.photos/500/300?random=5" alt="" /></a>
-								</div>
-								<div class="single-brand glide__slide">
-									<a href="#"><img
-										src="https://picsum.photos/500/300?random=6" alt="" /> </a>
-								</div>
-								<div class="single-brand glide__slide">
-									<a href="#"><img
-										src="https://picsum.photos/500/300?random=7" alt="" /></a>
-								</div>
+								<c:forEach var="a" items="${authors}">
+									<div class="single-brand glide__slide px-6 py-4">
+										<a class="d-flex flex-column justify-content-center align-items-center" href="#">
+										<img style="border-radius:50%; width: 80px; height:80px" src="https://picsum.photos/500/300?random=1" alt="" /> 
+											<div style="color:#333;text-transform: none;'" class="text-center mt-4">${a.authorName}</div>
+										</a>
+									</div>
+								</c:forEach>
 							</div>
 						</div>
 					</div>
@@ -192,156 +130,45 @@
 						</div>
 						<div class="product-style">
 							<div class="custom-row">
-								<div class="custom-col-5 custom-col-style mb-4 wow fadeInUp">
-									<div class="product-wrapper">
-										<div class="product-img">
-											<a href="#"> <img
-												src="https://picsum.photos/500/300?random=20" alt="" />
-											</a>
-											<div class="product-action flex-center">
-												<div class="animate-left add-to-wishlist" title="Wishlist"
-													data-product-id="10">
-													<i class="fa-regular fa-heart"></i>
-												</div>
-												<a href="#" class="animate-right" title="Add To Cart"
-													data-product-id="99"> <span
-													class="material-symbols-outlined"> shopping_cart </span>
+								<c:forEach var="p" items="${products}" varStatus="status">
+									<div class="custom-col-5 custom-col-style mb-4 wow fadeInUp">
+										<div class="product-wrapper">
+											<div class="product-img">
+												<a href="#"> <img src="${p.images.get(0).imageURL}"
+													alt="" />
 												</a>
-											</div>
-										</div>
-										<div class="product-content">
-											<a href="#">
-												<div class="category__brand">123</div>
-											</a>
-											<h4>
-												<a href="#">book name</a>
-											</h4>
-											<span class="remove">Giá sản phẩm</span> <span>Giá sau
-												giảm giá</span>
-										</div>
-										<div class="product-discount-label">-10%</div>
-									</div>
-								</div>
-								<div class="custom-col-5 custom-col-style mb-4 wow fadeInUp">
-									<div class="product-wrapper">
-										<div class="product-img">
-											<a href="#"> <img
-												src="https://picsum.photos/500/300?random=24" alt="" />
-											</a>
-											<div class="product-action">
-												<div class="animate-left add-to-wishlist" title="Wishlist"
-													data-product-id="10">
-													<i class="fa-regular fa-heart"></i>
+												<div class="product-action flex-center">
+													<div class="animate-left add-to-wishlist" title="Wishlist"
+														data-product-id="10">
+														<i class="fa-regular fa-heart"></i>
+													</div>
+													<a href="#" class="animate-right" title="Add To Cart"
+														data-product-id="99"> <span
+														class="material-symbols-outlined"> shopping_cart </span>
+													</a>
 												</div>
-												<a href="#" class="animate-right" title="Add To Cart"
-													data-product-id="99"> <span
-													class="material-symbols-outlined"> shopping_cart </span>
-												</a>
 											</div>
-										</div>
-										<div class="product-content">
-											<a href="#">
-												<div class="category__brand">123</div>
-											</a>
-											<h4>
-												<a href="#">book name</a>
-											</h4>
-											<span class="remove">Giá sản phẩm</span> <span>Giá sau
-												giảm giá</span>
-										</div>
-										<div class="product-discount-label">-10%</div>
-									</div>
-								</div>
-								<div class="custom-col-5 custom-col-style mb-4 wow fadeInUp">
-									<div class="product-wrapper">
-										<div class="product-img">
-											<a href="#"> <img
-												src="https://picsum.photos/500/300?random=29" alt="" />
-											</a>
-											<div class="product-action">
-												<div class="animate-left add-to-wishlist" title="Wishlist"
-													data-product-id="10">
-													<i class="fa-regular fa-heart"></i>
-												</div>
-												<a href="#" class="animate-right" title="Add To Cart"
-													data-product-id="99"> <span
-													class="material-symbols-outlined"> shopping_cart </span>
-												</a>
+											<div class="product-content">
+												<h4>
+													<a href="#">${p.name}</a>
+												</h4>
+												<c:choose>
+													<c:when test="${p.discountPercent > 0}">
+														<span class="remove">${p.price}.000 VND</span>
+														<span>Giá: ${p.price * (100-p.discountPercent)/100}.000
+															VND</span>
+													</c:when>
+													<c:when test="${p.discountPercent <= 0}">
+														<span class="">Giá: ${p.price}.000 VND</span>
+													</c:when>
+												</c:choose>
 											</div>
+											<c:if test="${p.discountPercent > 0}">
+												<div class="product-discount-label">-${p.discountPercent}%</div>
+											</c:if>
 										</div>
-										<div class="product-content">
-											<a href="#">
-												<div class="category__brand">123</div>
-											</a>
-											<h4>
-												<a href="#">book name</a>
-											</h4>
-											<span class="remove">Giá sản phẩm</span> <span>Giá sau
-												giảm giá</span>
-										</div>
-										<div class="product-discount-label">-10%</div>
 									</div>
-								</div>
-								<div class="custom-col-5 custom-col-style mb-4 wow fadeInUp">
-									<div class="product-wrapper">
-										<div class="product-img">
-											<a href="#"> <img
-												src="https://picsum.photos/500/300?random=24" alt="" />
-											</a>
-											<div class="product-action">
-												<div class="animate-left add-to-wishlist" title="Wishlist"
-													data-product-id="10">
-													<i class="fa-regular fa-heart"></i>
-												</div>
-												<a href="#" class="animate-right" title="Add To Cart"
-													data-product-id="99"> <span
-													class="material-symbols-outlined"> shopping_cart </span>
-												</a>
-											</div>
-										</div>
-										<div class="product-content">
-											<a href="#">
-												<div class="category__brand">123</div>
-											</a>
-											<h4>
-												<a href="#">book name</a>
-											</h4>
-											<span class="remove">Giá sản phẩm</span> <span>Giá sau
-												giảm giá</span>
-										</div>
-										<div class="product-discount-label">-10%</div>
-									</div>
-								</div>
-								<div class="custom-col-5 custom-col-style mb-4 wow fadeInUp">
-									<div class="product-wrapper">
-										<div class="product-img">
-											<a href="#"> <img
-												src="https://picsum.photos/500/300?random=31" alt="" />
-											</a>
-											<div class="product-action">
-												<div class="animate-left add-to-wishlist" title="Wishlist"
-													data-product-id="10">
-													<i class="fa-regular fa-heart"></i>
-												</div>
-												<a href="#" class="animate-right" title="Add To Cart"
-													data-product-id="99"> <span
-													class="material-symbols-outlined"> shopping_cart </span>
-												</a>
-											</div>
-										</div>
-										<div class="product-content">
-											<a href="#">
-												<div class="category__brand">123</div>
-											</a>
-											<h4>
-												<a href="#">book name</a>
-											</h4>
-											<span class="remove">Giá sản phẩm</span> <span>Giá sau
-												giảm giá</span>
-										</div>
-										<div class="product-discount-label">-10%</div>
-									</div>
-								</div>
+								</c:forEach>
 							</div>
 						</div>
 						<div class="load-more">

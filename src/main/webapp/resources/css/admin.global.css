@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+html{
+	font-size: 18px;
+}
+
+.sidebar-dark .nav-item.active .nav-link {
+	color: #4e73df;
+	background-color: #f8f9fc;
+}
+
+.sidebar-dark .nav-item.active .nav-link i {
+	color: #4e73df;
+}
+
+
+

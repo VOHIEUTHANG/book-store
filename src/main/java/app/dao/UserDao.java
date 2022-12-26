@@ -73,5 +73,9 @@ public class UserDao {
 		}
 	}
 	
+//	public Product getProductById(String id) {
+//		
+//	}
+	
 
 }

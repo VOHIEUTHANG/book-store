@@ -514,6 +514,14 @@
 	opacity: 1;
 }
 
+#main .brand-logo-area .single-brand{
+	background-color:white;
+	border-radius: 12px;
+	padding: 10px 20px;
+	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+
 @media ( min-width : 1650px) {
 	.custom-col-5 {
 		flex: 0 0 20%;

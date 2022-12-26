@@ -74,7 +74,7 @@ public class Product {
 	}
 
 	public Product(String name, int price, Author author, Category category,
-			Publisher publisher) {
+			Publisher publisher, int publicYear) {
 			this.id = UUID.randomUUID().toString();
 			this.name = name;
 			this.price = price;
@@ -84,6 +84,7 @@ public class Product {
 			this.inventory = 100;
 			this.publisher = publisher;
 			this.isDeleted = false;
+			this.publicYear = publicYear;
 	}
 	
 	public Publisher getPublisher() {
