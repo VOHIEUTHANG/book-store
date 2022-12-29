@@ -36,15 +36,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.Expose;
 
+import app.commons.Response;
 import app.commons.UserInfo;
 import app.commons.UserResponse;
 import app.dao.ProductDao;
+import app.dao.UserDao;
 import app.dao.WishlistDao;
 import app.entity.Product;
 import app.entity.Role;
 import app.entity.User;
 import app.entity.Wishlist;
 import app.service.UserService;
+import app.utils.PasswordHandler;
 import app.utils.Upload;
 
 @Transactional
@@ -194,13 +197,52 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "change-password", method = RequestMethod.POST, produces = "text/html;charset=UTF-8;multipart/form-data")
-	public String changePassword(HttpServletRequest req, HttpSession session, ModelMap model) throws JSONException {
-			
+	@ResponseBody
+	public String changePassword(HttpServletRequest req, HttpSession session, ModelMap model) throws Exception {
+		User currentUser = (User) session.getAttribute("userEntity");
+		if (currentUser == null)
+			return "login";
 		Upload upload = new Upload();
-		JSONObject data = new JSONObject(req.getParameter("userInfo"));
-		String password = data.getString("password");
+		JSONObject data = new JSONObject(req.getParameter("passwordInfo"));
+		String currentPassword = data.getString("currentPassword");
+		String newPassword = data.getString("newPassword");
 
-		return "change-password";
+		System.out.println("current pass => " + currentPassword);
+		System.out.println("new pass => " + newPassword);
+		
+		PasswordHandler passHandler = new PasswordHandler();
+			
+		String trueCurrentPass = currentUser.getPassword();
+		
+		Boolean checkMatchPass = passHandler.checkPassword(currentPassword, trueCurrentPass);
+		
+		Response reponse = new Response();	
+		
+		if(checkMatchPass) {
+			String newHashPassword = passHandler.getHashPassword(newPassword);
+			currentUser.setPassword(newHashPassword);
+			System.out.println(newHashPassword);
+			Boolean updateResult = userService.updateUser(currentUser);
+			if(updateResult) {
+				reponse.setStatus(true);
+				reponse.setMessage("Cập nhật mật khẩu thành công !");
+//				Log out
+				session.removeAttribute("user");
+				session.removeAttribute("userEntity");
+				
+			}else {
+				reponse.setStatus(false);
+				reponse.setMessage("Cập nhận mật khẩu thất bại !");
+			}
+		}else {
+			reponse.setStatus(false);
+			reponse.setMessage("Mật khẩu không trùng khớp, vui lòng kiểm tra lại!");
+		}
+		
+		Gson gson = new GsonBuilder().create();
+		String jsonResponse = gson.toJson(reponse);
+		
+		return jsonResponse;
 	}
 
 //	WISHLIST ===> 

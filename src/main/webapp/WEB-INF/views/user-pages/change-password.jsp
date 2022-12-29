@@ -6,7 +6,8 @@
 <head>
 <meta charset="utf-8">
 <base href="${pageContext.servletContext.contextPath}/" />
-<link rel="icon" href="https://png.pngtree.com/template/20190316/ourmid/pngtree-books-logo-image_79143.jpg" >
+<link rel="icon"
+	href="https://png.pngtree.com/template/20190316/ourmid/pngtree-books-logo-image_79143.jpg">
 <title>User Profile</title>
 <jsp:include page="../partials/external_head.jsp" />
 <link rel="stylesheet" href="resources/css/login.css">
@@ -47,6 +48,7 @@
 									</div>
 									<button type="submit" class="button button-full">CHANGE
 										PASSWORD</button>
+									<p id="error-message" style="color: red"></p>
 								</form>
 							</div>
 						</div>
@@ -89,29 +91,23 @@
               const currentPassword = $('#current-password').val();
               const newPassword = $('#new-password').val();
               const payload = { currentPassword, newPassword };
-              console.log(payload);
               
-              await privateRequestHandler('/api/user/change-password', 'put', payload, (data, status) => {
-                 toastr[data.status](data.message);
-                 if (data.status === 'success') {
-                    const { refreshToken } = localStorage.getStore();
-                    const payload = { refreshToken };
-                    
-                    axios
-                       .delete('/api/user/logout', { data: payload })
-                       .then(({ data }) => {
-                          console.log('đăng xuất thành công !');
-                          setTimeout(() => {
-                             window.location.href = '/login';
-                          }, 3000);
-                       })
-                       .catch((error) => {
-                          toastr.error('Logout failured, please try again !');
-                       });
-                 }
-              });
+              const formData = new FormData();
               
+              formData.append('passwordInfo',JSON.stringify(payload));
               
+              const {data, status} = await axios.post(`/BooksStore/user/change-password.htm`, formData, { 
+  				headers: { 'Content-Type': 'multipart/form-data' } 
+				});
+          	console.log(data);
+			if(status == 200 && data.status){
+				console.log("Cập nhật thông tin người dùng thành công !");
+				location.reload();
+			}else{
+				
+			   $("#error-message").text(data.message);
+			}
+                                        
            }
         });
      

@@ -140,6 +140,7 @@
 					   phoneNumber: totalData.phoneNumber,
                     }),
                  );
+
                  if (avatarNode[0]?.files?.length > 0) {
                     const avatarFile = avatarNode[0].files[0];
                     formData.append('avatar', avatarFile);

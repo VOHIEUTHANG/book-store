@@ -57,6 +57,7 @@ public class MainController {
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {
 		session.removeAttribute("user");
+		session.removeAttribute("userEntity");
 		return "index";
 	}
 
