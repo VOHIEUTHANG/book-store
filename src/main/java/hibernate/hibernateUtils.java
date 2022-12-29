@@ -20,6 +20,7 @@ import app.entity.ProductImage;
 import app.entity.Publisher;
 import app.entity.Role;
 import app.entity.User;
+import app.entity.Wishlist;
 
 public class hibernateUtils {
 	private static SessionFactory sessionFactory;
@@ -50,6 +51,7 @@ public class hibernateUtils {
 				configuration.addAnnotatedClass(Role.class);
 				configuration.addAnnotatedClass(User.class);
 				configuration.addAnnotatedClass(Publisher.class);
+				configuration.addAnnotatedClass(Wishlist.class);
 				ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 						.applySettings(configuration.getProperties()).build();
 				sessionFactory = configuration.buildSessionFactory(serviceRegistry);

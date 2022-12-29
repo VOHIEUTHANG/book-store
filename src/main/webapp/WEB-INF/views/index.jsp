@@ -66,13 +66,13 @@
 										<c:forEach var="p" items="${newestProduct}" varStatus="status">
 											<li class="glide__slide">
 												<div class="category-item wow fadeInLeft">
-													<a href="#" class="product-link">
+													<a href="<c:url value='/product/detail/${p.id}.htm'/>" class="product-link">
 														<div class="category__image">
 															<img src="${p.images.get(0).imageURL}" alt="" />
 														</div>
 													</a>
 													<div class="category__desc">
-														<a href="#">
+														<a href="<c:url value='/product/detail/${p.id}.htm'/>">
 															<div class="category__brand">${p.author.authorName}</div>
 														</a> <a href="#">
 															<div class="category__name">${p.name}</div>
@@ -112,7 +112,7 @@
 								<c:forEach var="a" items="${authors}">
 									<div class="single-brand glide__slide px-6 py-4">
 										<a class="d-flex flex-column justify-content-center align-items-center" href="#">
-										<img style="border-radius:50%; width: 80px; height:80px" src="https://picsum.photos/500/300?random=1" alt="" /> 
+										<img style="border-radius:50%; width: 80px; height:80px" src="${a.authorPhoto}" alt="" /> 
 											<div style="color:#333;text-transform: none;'" class="text-center mt-4">${a.authorName}</div>
 										</a>
 									</div>
@@ -134,14 +134,14 @@
 									<div class="custom-col-5 custom-col-style mb-4 wow fadeInUp">
 										<div class="product-wrapper">
 											<div class="product-img">
-												<a href="#"> <img src="${p.images.get(0).imageURL}"
+												<a href="<c:url value='/product/detail/${p.id}.htm'/>"> <img src="${p.images.get(0).imageURL}"
 													alt="" />
 												</a>
-												<div class="product-action flex-center">
-													<div class="animate-left add-to-wishlist" title="Wishlist"
+												<div class="product-action flex-center">												
+													<a href="<c:url value='/user/add-to-wishlist/${p.id}.htm'/>" class="animate-left add-to-wishlist" title="Wishlist"
 														data-product-id="10">
 														<i class="fa-regular fa-heart"></i>
-													</div>
+													</a>
 													<a href="#" class="animate-right" title="Add To Cart"
 														data-product-id="99"> <span
 														class="material-symbols-outlined"> shopping_cart </span>
@@ -150,7 +150,7 @@
 											</div>
 											<div class="product-content">
 												<h4>
-													<a href="#">${p.name}</a>
+													<a href="<c:url value='/product/detail/${p.id}.htm'/>">${p.name}</a>
 												</h4>
 												<c:choose>
 													<c:when test="${p.discountPercent > 0}">

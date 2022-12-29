@@ -67,8 +67,8 @@ public class Product {
 	@OneToMany(mappedBy = "product_orderItem", fetch = FetchType.EAGER)
 	private List<OrderItem> orderItems = new ArrayList<>();
 
-	@ManyToMany(mappedBy = "product_wishlist")
-	Set<User> usersHaveWishList = new HashSet<>();
+	@OneToMany(mappedBy = "product_wishlist", fetch = FetchType.EAGER)
+	private List<Wishlist> wishlist = new ArrayList<>();
 
 	public Product() {
 	}
@@ -101,6 +101,14 @@ public class Product {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public List<Wishlist> getWishlist() {
+		return wishlist;
+	}
+
+	public void setWishlist(List<Wishlist> wishlist) {
+		this.wishlist = wishlist;
 	}
 
 	public String getName() {
@@ -205,14 +213,6 @@ public class Product {
 
 	public void setOrderItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
-	}
-
-	public Set<User> getUsersHaveWishList() {
-		return usersHaveWishList;
-	}
-
-	public void setUsersHaveWishList(Set<User> usersHaveWishList) {
-		this.usersHaveWishList = usersHaveWishList;
 	}
 
 	public void setAuthor(Author author) {

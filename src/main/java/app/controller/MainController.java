@@ -41,17 +41,13 @@ public class MainController {
 		newestProduct = productDao.getNewestProducts();
 		authors = authorDao.getAll();
 		
-		System.out.println(newestProduct.size());
-		System.out.println(authors.size());
-		
-		System.out.println(authors.get(0).getAuthorName());
-		
 		model.addAttribute("products", products);
 		model.addAttribute("newestProduct", newestProduct);
 		model.addAttribute("authors", authors);
 		
 		return "index";
 	}
+	
 
 	@RequestMapping("login")
 	public String getFormLogin() {

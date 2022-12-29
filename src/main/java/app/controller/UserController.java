@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,8 +38,12 @@ import com.google.gson.annotations.Expose;
 
 import app.commons.UserInfo;
 import app.commons.UserResponse;
+import app.dao.ProductDao;
+import app.dao.WishlistDao;
+import app.entity.Product;
 import app.entity.Role;
 import app.entity.User;
+import app.entity.Wishlist;
 import app.service.UserService;
 import app.utils.Upload;
 
@@ -46,6 +52,8 @@ import app.utils.Upload;
 @RequestMapping("user")
 public class UserController {
 	private UserService userService = new UserService();
+	WishlistDao wishlistDao = new WishlistDao();
+	ProductDao productDao = new ProductDao();
 
 	@Autowired
 	ServletContext context;
@@ -70,16 +78,16 @@ public class UserController {
 
 			session.setAttribute("user", currentUser);
 			session.setAttribute("userEntity", user);
-			
-			if(user.getRole().getRole().equals("USER")) {
-				return "redirect:/index.htm";				
-			}else if(user.getRole().getRole().equals("ADMIN")) {
-				return "redirect:/admin/home.htm";	
+
+			if (user.getRole().getRole().equals("USER")) {
+				return "redirect:/index.htm";
+			} else if (user.getRole().getRole().equals("ADMIN")) {
+				return "redirect:/admin/home.htm";
 			}
 		}
 
 		model.addAttribute("response", res);
-		
+
 		return "login";
 	}
 
@@ -147,7 +155,7 @@ public class UserController {
 
 		User currentUser = (User) session.getAttribute("userEntity");
 		UserInfo currentUserInfo = (UserInfo) session.getAttribute("user");
-		
+
 		if (currentUser != null) {
 			if (imageFile != null) {
 				String path = upload.writeFile(imageFile, context);
@@ -166,7 +174,7 @@ public class UserController {
 			Boolean updateStatus = userService.updateUser(currentUser);
 			session.setAttribute("userEntity", currentUser);
 			session.setAttribute("user", currentUserInfo);
-			
+
 			if (updateStatus) {
 				return "OK";
 			} else {
@@ -175,9 +183,75 @@ public class UserController {
 		}
 		System.out.println("User is null !");
 		return "FAIL";
-
 	}
 
+	@RequestMapping("change-password")
+	public String getChangePasswordPage(HttpSession session) {
+		User currentUser = (User) session.getAttribute("userEntity");
+		if (currentUser == null)
+			return "login";
+		return "user-pages/change-password";
+	}
 
+	@RequestMapping(value = "change-password", method = RequestMethod.POST, produces = "text/html;charset=UTF-8;multipart/form-data")
+	public String changePassword(HttpServletRequest req, HttpSession session, ModelMap model) throws JSONException {
+			
+		Upload upload = new Upload();
+		JSONObject data = new JSONObject(req.getParameter("userInfo"));
+		String password = data.getString("password");
+
+		return "change-password";
+	}
+
+//	WISHLIST ===> 
+
+	@RequestMapping(value = "add-to-wishlist/{productID}", method = RequestMethod.GET)
+	public String addToWishList(@PathVariable("productID") String productID, HttpSession session,
+			HttpServletRequest request) {
+		List<Product> products = productDao.getProductById(productID);
+		if (products.size() > 0) {
+			Product product = products.get(0);
+			User user = (User) session.getAttribute("userEntity");
+
+			if (user == null) {
+				return "login";
+			}
+
+			Boolean isExistedWishlist = wishlistDao.checkExistedWishlist(user.getUsername(), product.getId());
+			if (!isExistedWishlist) {
+				Wishlist wishlist = new Wishlist(user, product);
+				Boolean insertResult = wishlistDao.insert(wishlist);
+				System.out.println("INSERT INTO WISHLIST STATUS " + insertResult);
+			} else {
+				System.out.println("EXISTED PRODUCT");
+			}
+
+		} else {
+			return "404";
+		}
+
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
+	}
+
+	@RequestMapping("wishlist")
+	public String getUserWishlist(HttpSession session, ModelMap model) {
+		User currentUser = (User) session.getAttribute("userEntity");
+		if (currentUser == null) {
+			return "login";
+		}
+		List<Wishlist> wishlist = wishlistDao.getByUsername(currentUser.getUsername());
+		model.addAttribute("wishlist", wishlist);
+
+		return "user-pages/wishlist";
+	}
+
+	@RequestMapping(value = "wishlist/delete/{wishlistID}", method = RequestMethod.GET)
+	public String deleteWishlist(@PathVariable("wishlistID") int wishlistID, HttpServletRequest request) {
+		Boolean deleteResult = wishlistDao.deleteByID(wishlistID);
+
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
+	}
 
 }

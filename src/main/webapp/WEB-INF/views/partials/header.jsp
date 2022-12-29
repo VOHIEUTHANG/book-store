@@ -47,17 +47,21 @@
 											<img src="${user.avatar}" alt="" />
 										</div>
 										<div class="user-options">
-											<a href="<c:url value='/user/profile.htm'/>" id="user-profile"
-												class="user-options__item info"> <i
+											<a href="<c:url value='/user/profile.htm'/>"
+												id="user-profile" class="user-options__item info"> <i
 												class="fa-regular fa-user"></i> <span>Thông tin</span>
-											</a> <a href="/wishlist" class="user-options__item"> <i
+											</a> <a href="<c:url value='/user/wishlist.htm'/>"
+												class="user-options__item"> <i
 												class="fa-regular fa-heart"></i> <span>Wishlist</span>
-											</a> <a href="/delivery-address" class="user-options__item">
-												<i class="ti-location-pin"></i> <span>Địa chỉ</span>
-											</a> <a href="/purchase-order" class="user-options__item"> <i
-												class="ti-pencil-alt"></i> <span>Đơn mua</span>
-											</a> <a href="/change-password" class="user-options__item"> <i
-												class="ti-key"></i> <span>Đổi mật khẩu</span>
+											</a> <a href="<c:url value='/user/delivery-address.htm'/>"
+												class="user-options__item"> <i class="ti-location-pin"></i>
+												<span>Địa chỉ</span>
+											</a> <a href="<c:url value='/user/order.htm'/>"
+												class="user-options__item"> <i class="ti-pencil-alt"></i>
+												<span>Đơn mua</span>
+											</a> <a href="<c:url value='/user/change-password.htm'/>"
+												class="user-options__item"> <i class="ti-key"></i> <span>Đổi
+													mật khẩu</span>
 											</a> <a href="<c:url value='/logout.htm'/>"
 												class="user-options__item logout"> <i
 												class="fa-solid fa-arrow-right-from-bracket"></i> <span>Đăng

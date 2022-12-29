@@ -54,6 +54,19 @@ public class ProductDao {
 		String hql = "FROM Product WHERE id = :productID";
 		Query query = session.createQuery(hql);
 		query.setParameter("productID", productID);
+		query.setMaxResults(1);
+		List<Product> products = query.list();
+		
+		return products;
+	}
+	
+	public List<Product> getRelatedProducts(String productID,int authorID) {
+		Session session = factory.openSession();
+		String hql = "FROM Product WHERE authorId = :authorID AND id != :productID";
+		Query query = session.createQuery(hql);
+		query.setParameter("authorID", authorID);
+		query.setParameter("productID", productID);
+		query.setMaxResults(10);
 		List<Product> products = query.list();
 		
 		return products;

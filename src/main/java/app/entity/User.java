@@ -67,11 +67,10 @@ public class User {
 
 	@OneToMany(mappedBy = "user_order", fetch = FetchType.EAGER)
 	private List<Order> orders = new ArrayList<>();
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "Wishlist", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "product"))
-	private Set<Product> product_wishlist = new HashSet<>();
-		
+	
+	@OneToMany(mappedBy = "user_wishlist", fetch = FetchType.EAGER)
+	private List<Wishlist> wishlist = new ArrayList<>();
+	
 	public User(String username, String password, String fullName, String email, String phoneNumber, 
 			Date createAt) {
 		super();
@@ -185,20 +184,29 @@ public class User {
 		this.orders = orders;
 	}
 
-	public Set<Product> getProduct_wishlist() {
-		return product_wishlist;
-	}
-
-	public void setProduct_wishlist(Set<Product> product_wishlist) {
-		this.product_wishlist = product_wishlist;
-	}
-
 	public void setGender(Boolean gender) {
 		this.gender = gender;
 	}
 
 	public Boolean getIsActive() {
 		return isActive;
+	}
+
+	public List<Wishlist> getWishlist() {
+		return wishlist;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", password=" + password + ", fullName=" + fullName + ", email=" + email
+				+ ", phoneNumber=" + phoneNumber + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", avatar="
+				+ avatar + ", gender=" + gender + ", isActive=" + isActive + ", createAt=" + createAt + ", role=" + role
+				+ ", deliverAddress=" + deliverAddress + ", comments=" + comments + ", carts=" + carts + ", orders="
+				+ orders + ", wishlist=" + wishlist + "]";
+	}
+
+	public void setWishlist(List<Wishlist> wishlist) {
+		this.wishlist = wishlist;
 	}
 
 	public void setIsActive(Boolean isActive) {
@@ -211,15 +219,6 @@ public class User {
 
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
-	}
-
-	@Override
-	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", fullName=" + fullName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", avatar="
-				+ avatar + ", gender=" + gender + ", isActive=" + isActive + ", createAt=" + createAt
-				+ ", deliverAddress=" + deliverAddress + ", comments=" + comments + ", carts=" + carts + ", orders="
-				+ orders + ", product_wishlist=" + product_wishlist + "]";
 	}
 
 	public Role getRole() {
