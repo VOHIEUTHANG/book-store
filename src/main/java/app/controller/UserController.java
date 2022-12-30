@@ -39,11 +39,13 @@ import com.google.gson.annotations.Expose;
 import app.commons.Response;
 import app.commons.UserInfo;
 import app.commons.UserResponse;
+import app.dao.AddressDao;
 import app.dao.CommentDao;
 import app.dao.ProductDao;
 import app.dao.UserDao;
 import app.dao.WishlistDao;
 import app.entity.Comment;
+import app.entity.DeliveryAddress;
 import app.entity.Product;
 import app.entity.Role;
 import app.entity.User;
@@ -60,6 +62,7 @@ public class UserController {
 	WishlistDao wishlistDao = new WishlistDao();
 	ProductDao productDao = new ProductDao();
 	CommentDao commentDao = new CommentDao();
+	AddressDao addressDao = new AddressDao();
 
 	@Autowired
 	ServletContext context;
@@ -301,6 +304,8 @@ public class UserController {
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
 	}
+	
+//	COMMENT =>
 
 	@RequestMapping(value = "comment/insert", method = RequestMethod.POST, produces = "text/html;charset=UTF-8;multipart/form-data")
 	@ResponseBody
@@ -345,6 +350,21 @@ public class UserController {
 
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
+	}
+	
+//	DELIVERY ADDRESS
+	
+	@RequestMapping("delivery-address")
+	public String getUserAddress(HttpSession session, ModelMap model) {
+		User currentUser = (User) session.getAttribute("userEntity");
+		if (currentUser == null) {
+			return "login";
+		}
+		
+		List<DeliveryAddress> deliveryAddress = addressDao.getByUsername(currentUser.getUsername());
+		model.addAttribute("deliveryAddress", deliveryAddress);
+		
+		return "user-pages/delivery-address";
 	}
 
 }

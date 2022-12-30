@@ -20,11 +20,21 @@ public class DeliveryAddress {
 	private int id;
 	@Column
 	private String addressDetail;
-	@Column(nullable = false)
+	@Column
 	private String province;
-	@Column(nullable = false)
+	@Column
 	private String district;
+	@Column
+	private String ward;
 	
+	public String getWard() {
+		return ward;
+	}
+
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "username")
 	private User user_delivery;
@@ -69,8 +79,6 @@ public class DeliveryAddress {
 	public void setUser_delivery(User user_delivery) {
 		this.user_delivery = user_delivery;
 	}
-	
-	
 	
 	
 }
