@@ -35,6 +35,17 @@ public class Comment {
 	@ManyToOne
 	@JoinColumn(name="productId")
 	private Product product_comment;
+	
+	public Comment() {}
+	
+	public Comment(String content, String imageURL, User user_comment, Product product_comment) {
+		super();
+		this.content = content;
+		this.imageURL = imageURL;
+		this.createAt = new Date(System.currentTimeMillis());
+		this.user_comment = user_comment;
+		this.product_comment = product_comment;
+	}
 
 	public int getId() {
 		return id;

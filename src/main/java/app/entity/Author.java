@@ -20,8 +20,6 @@ public class Author {
 	private int id;
 	@Column 
 	private String authorName;
-
-
 	@Column 
 	private String authorPhoto;
 	@Column 
@@ -40,8 +38,9 @@ public class Author {
 		
 	}
 	
-	public Author(String authorName) {
+	public Author(String authorName, String authorPhoto) {
 		this.authorName = authorName;
+		this.authorPhoto = authorPhoto;
 	}
 	
 	public void setProducts(Collection<Product> products) {

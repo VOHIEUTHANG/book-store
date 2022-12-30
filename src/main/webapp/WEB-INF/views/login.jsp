@@ -45,10 +45,12 @@
 						</div>
 						<div class="text--underline">Quên mật khẩu?</div>
 						<button type="submit" class="button button-full">LOGIN</button>
+						<p class="text-danger">${message}</p>
 					</form>
 					<div class="more-options">
-						<a href="<c:url value='/register.htm'/>" class="text--underline">Tạo tại khoản</a> <a
-							href="<c:url value='/index.htm'/>" class="text--underline">Trở về cửa hàng</a>
+						<a href="<c:url value='/register.htm'/>" class="text--underline">Tạo
+							tại khoản</a> <a href="<c:url value='/index.htm'/>"
+							class="text--underline">Trở về cửa hàng</a>
 					</div>
 				</div>
 			</div>

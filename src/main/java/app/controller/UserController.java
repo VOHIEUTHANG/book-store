@@ -39,9 +39,11 @@ import com.google.gson.annotations.Expose;
 import app.commons.Response;
 import app.commons.UserInfo;
 import app.commons.UserResponse;
+import app.dao.CommentDao;
 import app.dao.ProductDao;
 import app.dao.UserDao;
 import app.dao.WishlistDao;
+import app.entity.Comment;
 import app.entity.Product;
 import app.entity.Role;
 import app.entity.User;
@@ -57,6 +59,7 @@ public class UserController {
 	private UserService userService = new UserService();
 	WishlistDao wishlistDao = new WishlistDao();
 	ProductDao productDao = new ProductDao();
+	CommentDao commentDao = new CommentDao();
 
 	@Autowired
 	ServletContext context;
@@ -87,6 +90,8 @@ public class UserController {
 			} else if (user.getRole().getRole().equals("ADMIN")) {
 				return "redirect:/admin/home.htm";
 			}
+		} else {
+			model.addAttribute("message", res.getMessage());
 		}
 
 		model.addAttribute("response", res);
@@ -209,39 +214,39 @@ public class UserController {
 
 		System.out.println("current pass => " + currentPassword);
 		System.out.println("new pass => " + newPassword);
-		
+
 		PasswordHandler passHandler = new PasswordHandler();
-			
+
 		String trueCurrentPass = currentUser.getPassword();
-		
+
 		Boolean checkMatchPass = passHandler.checkPassword(currentPassword, trueCurrentPass);
-		
-		Response reponse = new Response();	
-		
-		if(checkMatchPass) {
+
+		Response reponse = new Response();
+
+		if (checkMatchPass) {
 			String newHashPassword = passHandler.getHashPassword(newPassword);
 			currentUser.setPassword(newHashPassword);
 			System.out.println(newHashPassword);
 			Boolean updateResult = userService.updateUser(currentUser);
-			if(updateResult) {
+			if (updateResult) {
 				reponse.setStatus(true);
 				reponse.setMessage("Cập nhật mật khẩu thành công !");
 //				Log out
 				session.removeAttribute("user");
 				session.removeAttribute("userEntity");
-				
-			}else {
+
+			} else {
 				reponse.setStatus(false);
 				reponse.setMessage("Cập nhận mật khẩu thất bại !");
 			}
-		}else {
+		} else {
 			reponse.setStatus(false);
-			reponse.setMessage("Mật khẩu không trùng khớp, vui lòng kiểm tra lại!");
+			reponse.setMessage("Mật khẩu hiện tại không chính xác, vui lòng kiểm tra lại!");
 		}
-		
+
 		Gson gson = new GsonBuilder().create();
 		String jsonResponse = gson.toJson(reponse);
-		
+
 		return jsonResponse;
 	}
 
@@ -271,9 +276,10 @@ public class UserController {
 		} else {
 			return "404";
 		}
-
-		String referer = request.getHeader("Referer");
-		return "redirect:" + referer;
+		
+		
+		return "redirect:/user/wishlist.htm";
+		
 	}
 
 	@RequestMapping("wishlist")
@@ -291,6 +297,51 @@ public class UserController {
 	@RequestMapping(value = "wishlist/delete/{wishlistID}", method = RequestMethod.GET)
 	public String deleteWishlist(@PathVariable("wishlistID") int wishlistID, HttpServletRequest request) {
 		Boolean deleteResult = wishlistDao.deleteByID(wishlistID);
+
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
+	}
+
+	@RequestMapping(value = "comment/insert", method = RequestMethod.POST, produces = "text/html;charset=UTF-8;multipart/form-data")
+	@ResponseBody
+	public String insertComment(@RequestParam(value = "image", required = false) MultipartFile imageFile,
+			HttpServletRequest req, HttpSession session, ModelMap model, @RequestParam String comment,
+			@RequestParam String productID) throws Exception {
+		Upload upload = new Upload();
+		Response response = new Response();
+		User currentUser = (User) session.getAttribute("userEntity");
+
+		List<Product> products = productDao.getProductById(productID);
+
+		Comment commentRecord = new Comment();
+		commentRecord.setContent(comment);
+		commentRecord.setProduct(products.get(0));
+		commentRecord.setUser(currentUser);
+
+		if (imageFile != null) {
+			String path = upload.writeFile(imageFile, context);
+			commentRecord.setImageURL(path);
+		}
+
+		Boolean insertResult = commentDao.insert(commentRecord);
+
+		if (!insertResult) {
+			response.setStatus(false);
+			response.setMessage("Thêm bình luận thất bại !");
+		} else {
+			response.setStatus(true);
+			response.setMessage("Thêm bình luận thành công !");
+		}
+
+		Gson gson = new GsonBuilder().create();
+		String jsonResponse = gson.toJson(response);
+		return jsonResponse;
+
+	}
+	
+	@RequestMapping(value = "comment/delete/{commentID}", method = RequestMethod.GET)
+	public String deleteComment(@PathVariable("commentID") int commentID, HttpServletRequest request) {
+		Boolean deleteResult = commentDao.deleteByID(commentID);
 
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;

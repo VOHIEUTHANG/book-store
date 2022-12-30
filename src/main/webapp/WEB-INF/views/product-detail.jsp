@@ -9,6 +9,7 @@
 <title>PRODUCT DETAIL</title>
 <jsp:include page="./partials/external_head.jsp" />
 <link rel="stylesheet" href="resources/css/product-detail.css">
+
 </head>
 <body>
 	<div id="root">
@@ -197,8 +198,10 @@
 
 													<c:if
 														test="${cm.user_comment.username.equals(user.username)}">
-														<div class="delete-comment" data-comment-id="${cm.id}">
+														<div class="delete-comment">
+															<a href="<c:url value='/user/comment/delete/${cm.id}.htm'/>" style="color:#333">
 															<i class="ti-close"></i>
+															</a>
 														</div>
 													</c:if>
 												</div>
@@ -225,8 +228,8 @@
 												<div class="col col-sm-12 col-md-6 col-lg-4 col-xl-3">
 													<div class="product-wrapper">
 														<div class="product-img">
-															<a href="<c:url value='/product/detail/${p.id}.htm'/>"> <img
-																src="${p.images.get(0).imageURL}" alt="" />
+															<a href="<c:url value='/product/detail/${p.id}.htm'/>">
+																<img src="${p.images.get(0).imageURL}" alt="" />
 															</a>
 														</div>
 														<div class="product-content">
@@ -306,6 +309,55 @@
              }
        });
        
+	</script>
+	<script>
+	  const submitCommentBtn = $('.submit-image');
+      const commentInput = $('#comment-content');
+      const imageNode = $('#image-preview');
+      const imageReviewInput = $('#image-review');
+      imageReviewInput.on('change', function () {
+         const [file] = this.files;
+         const url = URL.createObjectURL(file);
+         imageNode.removeClass('hidden');
+         imageNode?.attr('src', url);
+      });
+      commentInput.on('input', function () {
+         $(this).removeClass('warning');
+      });
+      
+      submitCommentBtn.click(async function () {
+          const productID = this.dataset.productId;
+          const formData = new FormData();
+          const data = {};
+
+          if (imageReviewInput[0]?.files?.length > 0) {
+             formData.append('image', imageReviewInput[0].files[0]);
+          }
+          
+          if (commentInput.val()) {
+             formData.append('comment', commentInput.val());
+             formData.append('productID', productID);
+                      
+             const {data, status} = await axios.post(`/BooksStore/user/comment/insert.htm`, formData, { 
+ 				headers: { 'Content-Type': 'multipart/form-data' } 
+				}); 
+             
+             if(status === 200){
+            	 if(data.status === true){
+            		  location.reload();
+            	 }else{
+            		 console.log(data.message);
+            		 toast.error(data.message);
+            	 }
+            	 
+             }
+              
+             
+          } else {
+             commentInput.addClass('warning');
+             commentInput.focus();
+          }
+       });
 	</script>
 </body>
 </html>
