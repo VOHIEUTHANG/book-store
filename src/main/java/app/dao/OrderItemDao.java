@@ -10,28 +10,21 @@ import org.hibernate.Transaction;
 
 import app.entity.Author;
 import app.entity.DeliveryAddress;
+import app.entity.Order;
+import app.entity.OrderItem;
 import app.entity.Product;
 import app.entity.Role;
 import app.entity.Wishlist;
 import hibernate.hibernateUtils;
 
-public class AddressDao {
+public class OrderItemDao {
 	SessionFactory factory = hibernateUtils.getSessionFactory();
 
-	public List<DeliveryAddress> getByUsername(String username) {
-		Session session = factory.openSession();
-		String hql = "FROM DeliveryAddress WHERE username = :username";
-		Query query = session.createQuery(hql);
-		query.setParameter("username", username);
-		List<DeliveryAddress> addressList = query.list();
-		return addressList;
-	}
-
-	public Boolean insert(DeliveryAddress address) {
+	public Boolean insert(OrderItem orderItem) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			session.save(address);
+			session.save(orderItem);
 			t.commit();
 			return true;
 		} catch (Exception e) {
@@ -47,7 +40,7 @@ public class AddressDao {
 		Session session = (Session) factory.openSession();
 		Transaction t = session.beginTransaction();
 		try {
-			String hql = "DELETE from DeliveryAddress where id = :id";
+			String hql = "DELETE from Order where id = :id";
 			Query query = session.createQuery(hql);
 			query.setParameter("id", id);
 			System.out.println(query.executeUpdate());
@@ -58,6 +51,24 @@ public class AddressDao {
 			t.rollback();
 			return false;
 		} finally {
+			session.close();
+		}
+	}
+	
+	public Boolean update(Order order) {
+		Session session = (Session) factory.openSession();
+		Order updateOrder = (Order) session.merge(order);
+		Transaction t = session.beginTransaction();
+		try {
+			session.update(updateOrder);
+			t.commit();
+			return true;
+		} catch (Exception e) {
+			System.out.print(e);
+			t.rollback();
+			return false;
+		}
+		finally {
 			session.close();
 		}
 	}

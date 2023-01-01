@@ -9,6 +9,11 @@
 <title>PRODUCT DETAIL</title>
 <jsp:include page="./partials/external_head.jsp" />
 <link rel="stylesheet" href="resources/css/product-detail.css">
+<style>
+.btn-hover:hover #add-wishlist i {
+	color: white;
+}
+</style>
 
 </head>
 <body>
@@ -113,12 +118,16 @@
 											<div class="inc qtybutton">+</div>
 										</div>
 										<div class="quickview-btn-cart">
-											<div class="button" id="add-to-cart">add to cart</div>
+											<div class="button" data-id="${product.id}" id="add-to-cart">add
+												to cart</div>
 										</div>
 										<div class="quickview-btn-wishlist">
 											<div class="btn-hover" id="add-to-wishlist"
 												data-product-id="${product.id}">
-												<i class="fa-regular fa-heart"></i>
+												<a style="color: #333" id="add-wishlist"
+													href="<c:url value='/user/add-to-wishlist/${product.id}.htm'/>">
+													<i class="fa-regular fa-heart"></i>
+												</a>
 											</div>
 										</div>
 									</div>
@@ -199,8 +208,9 @@
 													<c:if
 														test="${cm.user_comment.username.equals(user.username)}">
 														<div class="delete-comment">
-															<a href="<c:url value='/user/comment/delete/${cm.id}.htm'/>" style="color:#333">
-															<i class="ti-close"></i>
+															<a
+																href="<c:url value='/user/comment/delete/${cm.id}.htm'/>"
+																style="color: #333"> <i class="ti-close"></i>
 															</a>
 														</div>
 													</c:if>
@@ -289,28 +299,11 @@
 		});
 	</script>
 	<script>
-	   const productCountEle = $('#product-count');
-       const plusBtn = $('.inc.qtybutton');
-       const minusBtn = $('.dec.qtybutton');
-       let currentVal = Number(productCountEle.val());
-       
-       minusBtn.click(() => {
-              currentVal > 1 && currentVal--;
-              productCountEle.val(currentVal);
-        });
-
-       plusBtn.click(() => {
-          const currentProductCount = $('.product-quantity').text();
-
-             const convertNumber = Number(currentProductCount);
-             if (currentVal < convertNumber) {
-                currentVal++;
-                productCountEle.val(currentVal);
-             }
-       });
+	  
        
 	</script>
 	<script>
+	
 	  const submitCommentBtn = $('.submit-image');
       const commentInput = $('#comment-content');
       const imageNode = $('#image-preview');
@@ -358,6 +351,56 @@
              commentInput.focus();
           }
        });
+	</script>
+	<script>
+	const productCountEle = $('#product-count');
+	const plusBtn = $('.inc.qtybutton');
+	const minusBtn = $('.dec.qtybutton');
+	let currentVal = Number(productCountEle.val());
+
+	minusBtn.click(() => {
+	   currentVal > 1 && currentVal--;
+	   productCountEle.val(currentVal);
+	});
+
+	plusBtn.click(() => {
+	   const currentProductCount = $('.product-quantity').text();
+
+	   const convertNumber = Number(currentProductCount);
+	   if (currentVal < convertNumber) {
+	      currentVal++;
+	      productCountEle.val(currentVal);
+	   }
+	});
+
+	// Add to cart handler ===>
+	const addToCartBtn = $('#add-to-cart');
+	addToCartBtn.click(async () => {
+	   const quantity = productCountEle.val();
+	   const productID = addToCartBtn[0].dataset.id;
+
+	   const formData = new FormData();
+	   formData.append('productID', productID);
+	   formData.append('quantity', quantity);
+
+	   const { data, status } = await axios.post(`/BooksStore/cart/insert.htm`, formData, {
+	      headers: { 'Content-Type': 'multipart/form-data' },
+	   });
+
+	   if (status === 200) {
+	      if (data.status) {
+	         Swal.fire('Thành công !', 'Thêm sản phẩm vào giỏ hàng thành công !', 'success');
+	         setTimeout(()=>{
+	        	 location.reload();
+	         },2000)
+	      } else {
+	    	 Swal.fire('Xảy ra lỗi !', data.message, 'error');
+	      }
+	   } else {
+		   Swal.fire('Xảy ra lỗi !', 'Gọi API xảy ra lỗi, vui lòng thử lại !', 'error');
+	   }
+	});
+
 	</script>
 </body>
 </html>

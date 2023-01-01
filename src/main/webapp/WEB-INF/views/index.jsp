@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,8 +79,8 @@
 															<div class="category__name">${p.name}</div>
 														</a>
 														<div class="category__price">
-															<span>Giá: ${p.price * (100-p.discountPercent)/100}.000
-																VND</span>
+															<span>Giá: <fmt:formatNumber currencySymbol="" maxFractionDigits="0" value="${p.price * (100 - p.discountPercent) * 10}" type="currency" /> 
+															VND</span>
 														</div>
 													</div>
 													<div class="category__foot" style="height: 1rem"></div>
@@ -142,7 +143,7 @@
 														data-product-id="10">
 														<i class="fa-regular fa-heart"></i>
 													</a>
-													<a href="#" class="animate-right" title="Add To Cart"
+													<a href="<c:url value='/product/detail/${p.id}.htm'/>" class="animate-right" title="Add To Cart"
 														data-product-id="99"> <span
 														class="material-symbols-outlined"> shopping_cart </span>
 													</a>
@@ -154,12 +155,12 @@
 												</h4>
 												<c:choose>
 													<c:when test="${p.discountPercent > 0}">
-														<span class="remove">${p.price}.000 VND</span>
-														<span>Giá: ${p.price * (100-p.discountPercent)/100}.000
+														<span class="remove">Giá: <fmt:formatNumber currencySymbol="" maxFractionDigits="0" value="${p.price * 1000}" type="currency" /> VND </span>
+														<span>Giá: <fmt:formatNumber currencySymbol="" maxFractionDigits="0" value="${p.price * (100 - p.discountPercent) * 10}" type="currency" /> 
 															VND</span>
 													</c:when>
 													<c:when test="${p.discountPercent <= 0}">
-														<span class="">Giá: ${p.price}.000 VND</span>
+														<span class="">Giá: <fmt:formatNumber currencySymbol="" maxFractionDigits="0" value="${p.price * 1000}" type="currency" /> VND </span>
 													</c:when>
 												</c:choose>
 											</div>

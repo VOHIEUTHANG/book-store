@@ -29,9 +29,19 @@
 
 <script src="resources/libs/jquery_3.6.min.js"></script>
 <script src="resources/libs/wow.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 	new WOW().init();
 </script>
 <link rel="stylesheet" href="resources/css/icons.css">
 <link rel="stylesheet" href="resources/css/base.css">
 <link rel="stylesheet" href="resources/css/home.css">
+<style>
+.swal2-container.swal2-center>.swal2-popup {
+	font-size: 16px;
+}
+
+.header__container {
+	width: 100vw;
+}
+</style>

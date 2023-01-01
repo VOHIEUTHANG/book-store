@@ -87,6 +87,8 @@ public class UserController {
 
 			session.setAttribute("user", currentUser);
 			session.setAttribute("userEntity", user);
+			session.setAttribute("carts", user.getCarts());
+			
 
 			if (user.getRole().getRole().equals("USER")) {
 				return "redirect:/index.htm";
@@ -138,6 +140,7 @@ public class UserController {
 
 			session.setAttribute("user", currentUser);
 			session.setAttribute("userEntity", loggedUser);
+			session.setAttribute("carts", loggedUser.getCarts());
 		}
 
 		registerResult.setUser(null);
@@ -279,10 +282,9 @@ public class UserController {
 		} else {
 			return "404";
 		}
-		
-		
+
 		return "redirect:/user/wishlist.htm";
-		
+
 	}
 
 	@RequestMapping("wishlist")
@@ -304,7 +306,7 @@ public class UserController {
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
 	}
-	
+
 //	COMMENT =>
 
 	@RequestMapping(value = "comment/insert", method = RequestMethod.POST, produces = "text/html;charset=UTF-8;multipart/form-data")
@@ -343,28 +345,80 @@ public class UserController {
 		return jsonResponse;
 
 	}
-	
-	@RequestMapping(value = "comment/delete/{commentID}", method = RequestMethod.GET)
-	public String deleteComment(@PathVariable("commentID") int commentID, HttpServletRequest request) {
-		Boolean deleteResult = commentDao.deleteByID(commentID);
 
+	@RequestMapping(value = "comment/delete/{commentID}", method = RequestMethod.GET)
+	public String deleteComment(@PathVariable("commentID") int commentID, HttpServletRequest request,HttpSession session) {		
+		User currentUser = (User) session.getAttribute("userEntity");
+		if(currentUser == null) return "403";
+		
+		Boolean deleteResult = commentDao.deleteByID(commentID);
+		if(!deleteResult) return "404";
+		
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
 	}
-	
+
 //	DELIVERY ADDRESS
-	
+	@Transactional
 	@RequestMapping("delivery-address")
 	public String getUserAddress(HttpSession session, ModelMap model) {
 		User currentUser = (User) session.getAttribute("userEntity");
 		if (currentUser == null) {
 			return "login";
 		}
-		
+
 		List<DeliveryAddress> deliveryAddress = addressDao.getByUsername(currentUser.getUsername());
 		model.addAttribute("deliveryAddress", deliveryAddress);
-		
+
 		return "user-pages/delivery-address";
+	}
+
+	@RequestMapping(value = "delivery-address/insert", method = RequestMethod.POST, produces = "text/html;charset=UTF-8;multipart/form-data")
+	@ResponseBody
+	public String insertDeliveryAddress(HttpSession session, ModelMap model, @RequestParam String province,
+			@RequestParam String district, @RequestParam String ward, @RequestParam String detailAddress)
+			throws Exception {
+		Response response = new Response();
+		User currentUser = (User) session.getAttribute("userEntity");
+		
+		DeliveryAddress address = new DeliveryAddress();
+		address.setAddressDetail(detailAddress);
+		address.setProvince(province);
+		address.setDistrict(district);
+		address.setWard(ward);
+		address.setUser_delivery(currentUser);
+		
+		Boolean insertResult = addressDao.insert(address);
+		
+		if(currentUser == null) {
+			response.setStatus(false);
+			response.setMessage("Hết phiên đăng nhập, vui lòng đăng nhập lại!");
+		}else {
+			if(insertResult) {
+				response.setStatus(true);
+				response.setMessage("Thêm địa chỉ thành công !");
+			}else {
+				response.setStatus(false);
+				response.setMessage("Thêm địa chỉ nhận hàng thất bại!");
+			}
+		}
+				
+		Gson gson = new GsonBuilder().create();
+		String jsonResponse = gson.toJson(response);
+		return jsonResponse;
+
+	}
+	
+	@RequestMapping(value = "delivery-address/delete/{addressID}", method = RequestMethod.GET)
+	public String deleteDeliveryAddress(@PathVariable("addressID") int addressID, HttpServletRequest request, HttpSession session) {		
+		User currentUser = (User) session.getAttribute("userEntity");
+		if(currentUser == null) return "403";
+		
+		Boolean deleteResult = addressDao.deleteByID(addressID);
+		if(!deleteResult) return "404";
+		
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
 	}
 
 }

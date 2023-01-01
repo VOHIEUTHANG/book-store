@@ -41,15 +41,11 @@
 														, <span id="province-${address.id}" class="province">${address.province}</span>
 													</div>
 												</div>
-												<div class="edit">
-													<div data-address-id="${address.id}"
-														class="update button light button--modify update-address">
-														<i class="fa-solid fa-pen-to-square"></i> Cập nhật
-													</div>
-													<div data-address-id="${address.id}"
+												<div class="edit">													
+													<a href="<c:url value='/user/delivery-address/delete/${address.id}.htm'/>" data-address-id="${address.id}"
 														class="remove button button--danger delete-address">
 														<i class="fa-solid fa-trash-can"></i> Xóa
-													</div>
+													</a>
 												</div>
 											</li>
 										</c:forEach>
@@ -141,6 +137,8 @@
 		<jsp:include page="../partials/footer.jsp" />
 	</div>
 	<jsp:include page="../partials/external_foot.jsp" />
+	<script src="resources/libs/localPicker.js"></script>
+
 	<script>
 		const addModal = $('#add-address-modal');
 		const updateModal = $('#update-address-modal');
@@ -219,13 +217,33 @@
                if(status===200){
             	   if(data.status){
             		location.reload();   
-            	   }            	   
-               }else{
-            	   toastr.error('Them dia chi xay ra loi!');
-               }
-               
+            	   }else{            		  
+            		   cuteAlert({
+            			   type: "error",
+            			   title: "Xảy ra lỗi !",
+            			   message: data.message,
+            			   buttonText: "Okay"
+            			 })
+            	   }            	               	   
+               }else{            	 
+            	   cuteAlert({
+            		   type: "error",
+            		   title: "Xảy ra lỗi !",
+            		   message: "Vui lòng liên hệ quản trị viên !",
+            		   buttonText: "Okay"
+            		 })
+               }               
              
             });
+         
+	</script>
+	<script>
+    var localpicker1 = new LocalPicker({
+        province: 'add-province',
+        district: 'add-district',
+        ward: 'add-ward',
+        provincePrefix: true,
+     });
 	</script>
 </body>
 </html>

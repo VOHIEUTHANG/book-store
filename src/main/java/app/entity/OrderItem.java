@@ -33,6 +33,21 @@ public class OrderItem {
 	@JoinColumn(name="orderId")
 	private Order order_orderItem;
 
+	public OrderItem() {
+		
+	}
+
+	public OrderItem(int originPrice, int discountPercent, int quantity, int actualPrice, Product product_orderItem,
+			Order order_orderItem) {
+		super();
+		this.originPrice = originPrice;
+		this.discountPercent = discountPercent;
+		this.quantity = quantity;
+		this.actualPrice = actualPrice;
+		this.product_orderItem = product_orderItem;
+		this.order_orderItem = order_orderItem;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -1,5 +1,9 @@
 package app.commons;
 
+import java.util.List;
+
+import app.entity.Cart;
+
 public class UserInfo {
 	private String username;
 	private String name;
@@ -17,7 +21,7 @@ public class UserInfo {
 		this.avatar = avatar;
 		this.role = role;
 		this.isLogin = isLogin;
-	}
+	}	
 
 	public Boolean getIsLogin() {
 		return isLogin;

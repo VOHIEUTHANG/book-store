@@ -73,6 +73,7 @@ ul {
 }
 
 /* RESET CSS =====================> */
+
 .glide {
 	position: relative;
 	width: 100%;
@@ -1296,3 +1297,5 @@ h1.page-heading span::after {
 .page-container {
 	padding: 8rem 0;
 }
+
+

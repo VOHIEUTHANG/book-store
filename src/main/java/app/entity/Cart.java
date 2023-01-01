@@ -26,7 +26,7 @@ public class Cart {
 	private Product product_cart;
 	
 	@Column
-	private int inventory;
+	private int quantity;
 
 	public int getId() {
 		return id;
@@ -52,12 +52,12 @@ public class Cart {
 		this.product_cart = product_cart;
 	}
 
-	public int getInventory() {
-		return inventory;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setInventory(int inventory) {
-		this.inventory = inventory;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 	
 }
