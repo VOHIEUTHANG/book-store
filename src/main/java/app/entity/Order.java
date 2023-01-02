@@ -54,8 +54,8 @@ public class Order {
 	@Column(columnDefinition = "int default 0")
 	private int paymentStatus;
 	/*
-	 * 0 : thanh toan thanh cong
-	 * 1 : thanh toan that bai
+	 * 0 : chua thanh toan
+	 * 1 : da thanh toan
 	 */
 	@Column(columnDefinition = "int default 0")
 	private int paymentMethod;
@@ -72,6 +72,21 @@ public class Order {
 	
 	@OneToMany(mappedBy="order_orderItem", fetch = FetchType.EAGER)
 	private List<OrderItem> orderItems = new ArrayList<>();
+	
+	public Order() {
+		
+	}
+	
+	public Order(int totalPrice, String deliveryAddress, User user_order) {
+		this.totalPrice = totalPrice;
+		this.orderStatus = 0;
+		this.deliveryStatus = 0;
+		this.paymentStatus = 0;
+		this.paymentMethod = 0;
+		this.createAt = new Date(System.currentTimeMillis());
+		this.deliveryAddress = deliveryAddress;
+		this.user_order = user_order;
+	}
 
 	public int getId() {
 		return id;

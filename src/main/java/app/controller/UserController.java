@@ -40,12 +40,16 @@ import app.commons.Response;
 import app.commons.UserInfo;
 import app.commons.UserResponse;
 import app.dao.AddressDao;
+import app.dao.CartDao;
 import app.dao.CommentDao;
+import app.dao.OrderDao;
 import app.dao.ProductDao;
 import app.dao.UserDao;
 import app.dao.WishlistDao;
+import app.entity.Cart;
 import app.entity.Comment;
 import app.entity.DeliveryAddress;
+import app.entity.Order;
 import app.entity.Product;
 import app.entity.Role;
 import app.entity.User;
@@ -63,6 +67,8 @@ public class UserController {
 	ProductDao productDao = new ProductDao();
 	CommentDao commentDao = new CommentDao();
 	AddressDao addressDao = new AddressDao();
+	OrderDao orderDao = new OrderDao();
+	CartDao cartDao = new CartDao();
 
 	@Autowired
 	ServletContext context;
@@ -87,7 +93,8 @@ public class UserController {
 
 			session.setAttribute("user", currentUser);
 			session.setAttribute("userEntity", user);
-			session.setAttribute("carts", user.getCarts());
+			List<Cart> carts = cartDao.getByUsername(currentUser.getUsername());
+			session.setAttribute("carts", carts);
 			
 
 			if (user.getRole().getRole().equals("USER")) {
@@ -140,7 +147,8 @@ public class UserController {
 
 			session.setAttribute("user", currentUser);
 			session.setAttribute("userEntity", loggedUser);
-			session.setAttribute("carts", loggedUser.getCarts());
+			List<Cart> carts = cartDao.getByUsername(currentUser.getUsername());
+			session.setAttribute("carts", carts);
 		}
 
 		registerResult.setUser(null);
@@ -419,6 +427,17 @@ public class UserController {
 		
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
+	}
+	
+	@RequestMapping(value = "order", method = RequestMethod.GET)
+	public String getAllOrder(HttpSession session, ModelMap modelMap) {
+		User currentUser = (User) session.getAttribute("userEntity");
+		if (currentUser == null)
+			return "403";
+
+		List<Order> orderList = orderDao.getByUsername(currentUser.getUsername());
+		modelMap.addAttribute("orderList", orderList);		
+		return "user-pages/purchase-order";
 	}
 
 }

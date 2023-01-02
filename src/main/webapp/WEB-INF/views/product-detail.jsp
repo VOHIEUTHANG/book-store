@@ -33,7 +33,7 @@
 													<div class="tab-pane fade active show"
 														id="pro-details${status.index + 1}" role="tabpanel">
 														<div class="easyzoom easyzoom--overlay">
-															<a target="_blank" href="${img.imageURL}"> <img
+															<a target="_blank" href="${img.imageURL}"> <img style="width:400px; height: 400px;"
 																src="${img.imageURL}" alt="" />
 															</a>
 														</div>
@@ -43,8 +43,8 @@
 													<div class="tab-pane fade"
 														id="pro-details${status.index + 1}" role="tabpanel">
 														<div class="easyzoom easyzoom--overlay">
-															<a target="_blank" href="${img.imageURL}"> <img
-																src="${img.imageURL}" alt="" />
+															<a target="_blank" href="${img.imageURL}"> 
+															<img style="width:400px; height: 400px;" src="${img.imageURL}" alt="" />
 															</a>
 														</div>
 													</div>
@@ -60,14 +60,14 @@
 															<a class="mb-10 swiper-slide active "
 																href="#pro-details${status.index + 1}"
 																data-bs-toggle="list" role="tab" aria-selected="true">
-																<img class="main-image" src="${img.imageURL}" alt="" />
+																<img style="width:90px; height:90px; object-fit:cover" class="main-image" src="${img.imageURL}" alt="" />
 															</a>
 														</c:if>
 														<c:if test="${status.index > 0}">
 															<a class="mb-10 swiper-slide "
 																href="#pro-details${status.index + 1}"
 																data-bs-toggle="list" role="tab" aria-selected="true">
-																<img class="" src="${img.imageURL}" alt="" />
+																<img  style="width:90px; height:90px;" class="" src="${img.imageURL}" alt="" />
 															</a>
 														</c:if>
 													</c:forEach>
@@ -289,14 +289,16 @@
 	</div>
 	<jsp:include page="./partials/external_foot.jsp" />
 	<script>
-		const swiper = new Swiper('.swiper.product-images-slide', {
-			direction : 'vertical',
-			slidesPerView : 4,
-			pagination : {
-				el : '.swiper-pagination',
-				clickable : true,
-			},
-		});
+		$(()=>{
+			const swiper = new Swiper('.swiper.product-images-slide', {
+				direction : 'vertical',
+				slidesPerView : 4,
+				pagination : {
+					el : '.swiper-pagination',
+					clickable : true,
+				},
+			});
+		})
 	</script>
 	<script>
 	  

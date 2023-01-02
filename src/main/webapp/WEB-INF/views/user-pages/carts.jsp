@@ -23,13 +23,13 @@
 								<c:if test="${carts.size() == 0}">
 									<div style="flex-direction: column; min-height: 50vh;"
 										class="d-flex justify-content-center align-items-center">
-										<img width="200px" src="/resources/images/emptyCart.png" />
+										<img width="200px" src="resources/images/emptyCart.png" />
 										<p
 											style="text-align: center; margin-top: 4rem; font-size: 1.8rem"
 											class="nothing-title">Bạn không có sản phẩm nào trong giỏ
 											hàng !</p>
-										<a href="/" class="button light" style="margin-top: 2rem;">Mua
-											hàng</a>
+										<a href="<c:url value='/index.htm'/>" class="button light"
+											style="margin-top: 2rem;">Mua hàng</a>
 									</div>
 								</c:if>
 
@@ -58,11 +58,10 @@
 													<c:set var="totalDiscount"
 														value="${(cart.product_cart.price*cart.product_cart.discountPercent/100) * cart.quantity + totalDiscount}" />
 													<tr data-product-id="${cart.product_cart.id}">
-														<td class="product-remove">
-															<a href="<c:url value='/cart/delete/${cart.id}.htm'/>" class="product-remove-btn">
-																<i class="ti-close"></i>
-															</a>
-														</td>
+														<td class="product-remove"><a
+															href="<c:url value='/cart/delete/${cart.id}.htm'/>"
+															class="product-remove-btn"> <i class="ti-close"></i>
+														</a></td>
 														<td class="product-thumbnail"><a
 															href="<c:url value='/product/detail/${cart.product_cart.id}.htm'/>"><img
 																src="${cart.product_cart.images.get(0).imageURL}" alt="" />
@@ -146,7 +145,7 @@
 						</div>
 					</div>
 				</div>
-				<c:if test="${cart.size() > 0}">
+				<c:if test="${carts.size() > 0}">
 					<div id="choose-address-modal" class="">
 						<div class="my-overlay">
 							<div class="my-modal">
@@ -286,7 +285,7 @@
         		   Swal.fire('Xảy ra lỗi !', data.message, 'error'); 
         	   }
            }else{
-        	   Swal.fire('Xảy ra lỗi !', 'Gọi API xảy ra lỗi, vui lòng thử lại !', 'error');   	   
+        	   Swal.fire('Xảy ra lỗi !', 'Vui lòng thử lại !', 'error');   	  
            }
            
      }
@@ -332,10 +331,9 @@
         		   Swal.fire('Xảy ra lỗi !', data.message, 'error'); 
         	   }
            }else{
-        	   Swal.fire('Xảy ra lỗi !', 'Gọi API xảy ra lỗi, vui lòng thử lại !', 'error');   	   
+        	   Swal.fire('Xảy ra lỗi !', 'Vui lòng thử lại !', 'error');   	   
            }
-           
-           
+
         }
         
         if(productCountNumber ===  Number(inventory) ){
@@ -343,6 +341,73 @@
         }
         }
      });
+	</script>
+
+	<script>
+	 const purchaseBtn = $('#purchase');
+     const chooseAddressModal = $('#choose-address-modal');
+     const orderBtn = $('#order-btn');
+
+     (function chooseAddressModalControl(){
+        const modalContainer = $('.my-modal');
+        const closeBtn = $('.btn-close-modal');
+        const overlay = $('.my-overlay');
+        closeBtn.click(() => {
+           chooseAddressModal.removeClass('show');
+        });
+        overlay.mousedown(() => {
+           chooseAddressModal.removeClass('show');
+        });
+        modalContainer.click((e) => {
+           e.stopPropagation();
+        });
+        modalContainer.mousedown((e) => {
+           e.stopPropagation();
+        });
+     })();
+
+     purchaseBtn.click(function(e){
+        chooseAddressModal.addClass('show');
+     })
+
+     orderBtn.click(async function(e){
+        e.preventDefault();
+        const checkedAddress = $('.form-check-input:checked'); 
+
+        if(checkedAddress.length > 0){
+           const addressID = checkedAddress[0].dataset.addressId;
+        	   
+        	   const formData = new FormData();
+        	   formData.append("addressID", addressID);
+            	
+               const {data, status} = await axios.post("/BooksStore/order/insert.htm", formData, { 
+   				headers: { 'Content-Type': 'multipart/form-data' } 
+   				});  
+               
+               if(status === 200){
+            	   const {message, status} = data;
+            	   if(status){
+            		   chooseAddressModal.removeClass('show');
+            		   Swal.fire('Thành công !', message, 'success');
+            		   
+            		   setTimeout(()=>{
+            			   
+            			   $('#purchase-btn')[0].click();
+            			   
+            		   },2000);            		   
+            		   
+            		   
+            	   }else{
+            		   Swal.fire('Xảy ra lỗi !', data.message, 'error'); 
+            	   }
+               }else{
+            	   Swal.fire('Xảy ra lỗi !', 'Vui lòng thử lại !', 'error');   	   
+               }               
+              	 
+        }else{
+        	   Swal.fire('Cảnh báo !', 'Vui lòng thêm địa chỉ nhận hàng !', 'error');  
+        }
+     })
 	</script>
 
 </body>

@@ -112,7 +112,7 @@
 											</a> <a href="<c:url value='/user/delivery-address.htm'/>"
 												class="user-options__item"> <i class="ti-location-pin"></i>
 												<span>Địa chỉ</span>
-											</a> <a href="<c:url value='/user/order.htm'/>"
+											</a> <a href="<c:url value='/user/order.htm'/>" id="purchase-btn"
 												class="user-options__item"> <i class="ti-pencil-alt"></i>
 												<span>Đơn mua</span>
 											</a> <a href="<c:url value='/user/change-password.htm'/>"

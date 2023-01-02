@@ -21,7 +21,7 @@ public class OrderDao {
 
 	public List<Order> getByUsername(String username) {
 		Session session = factory.openSession();
-		String hql = "FROM Order WHERE username = :username";
+		String hql = "FROM Order WHERE username = :username ORDER BY createAt DESC";
 		Query query = session.createQuery(hql);
 		query.setParameter("username", username);
 		List<Order> orders = query.list();

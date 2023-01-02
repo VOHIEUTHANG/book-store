@@ -44,4 +44,8 @@
 .header__container {
 	width: 100vw;
 }
+
+#root {
+	overflow: hidden;
+}
 </style>

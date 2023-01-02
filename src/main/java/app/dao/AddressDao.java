@@ -26,6 +26,19 @@ public class AddressDao {
 		List<DeliveryAddress> addressList = query.list();
 		return addressList;
 	}
+	
+	public DeliveryAddress getById(int id) {
+		Session session = factory.openSession();
+		String hql = "FROM DeliveryAddress WHERE id = :id";
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<DeliveryAddress> addressList = query.list();
+		if(addressList.size() > 0) {
+			return addressList.get(0);
+		}else {
+			return null;
+		}
+	}
 
 	public Boolean insert(DeliveryAddress address) {
 		Session session = factory.openSession();

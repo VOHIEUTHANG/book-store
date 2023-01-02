@@ -71,8 +71,8 @@ public class CartController {
 							product.setInventory(product.getInventory() - quantity);
 							Boolean udpateProductResult = productDao.update(product);
 //							update user carts
-							List<User> users = userDao.getUserByUsername(currentUser.getUsername());
-							session.setAttribute("carts", users.get(0).getCarts());
+							List<Cart> cartlist = cartDao.getByUsername(currentUser.getUsername());		
+							session.setAttribute("carts", cartlist);
 
 							response.setStatus(true);
 							response.setMessage("Thêm sản phầm vào giỏ hàng thành công !");
@@ -100,8 +100,8 @@ public class CartController {
 							product.setInventory(product.getInventory() - quantity);
 							Boolean udpateProductResult = productDao.update(product);
 //							update user carts
-							List<User> users = userDao.getUserByUsername(currentUser.getUsername());
-							session.setAttribute("carts", users.get(0).getCarts());
+							List<Cart> cartlist = cartDao.getByUsername(currentUser.getUsername());		
+							session.setAttribute("carts", cartlist);
 							response.setStatus(true);
 							response.setMessage("Thêm sản phẩm vào giỏ hàng thành công !");
 						} else {
@@ -131,13 +131,25 @@ public class CartController {
 		User currentUser = (User) session.getAttribute("userEntity");
 		if (currentUser == null)
 			return "403";
-
-		Boolean deleteResult = cartDao.deleteByID(cartID);
-		if (!deleteResult)
+		
+		Cart cart = cartDao.findOneById(cartID);
+		
+		if(cart == null) {
 			return "404";
-
-		List<User> users = userDao.getUserByUsername(currentUser.getUsername());
-		session.setAttribute("carts", users.get(0).getCarts());
+		}else {		
+			Product product = cart.getProduct_cart();
+			int currentInventory = product.getInventory();
+			currentInventory += cart.getQuantity();
+			product.setInventory(currentInventory);
+			
+			productDao.update(product);
+			
+			Boolean deleteResult = cartDao.deleteByID(cartID);
+			
+			List<Cart> carts = cartDao.getByUsername(currentUser.getUsername());		
+			session.setAttribute("carts", carts);
+		
+		}
 
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
@@ -191,9 +203,12 @@ public class CartController {
 					if(updateResult) {
 						response.setStatus(true);
 						response.setMessage("Cập nhật giỏ hàng thành công !");
+						List<Cart> carts = cartDao.getByUsername(currentUser.getUsername());
+						System.out.println(carts.size());
+						session.setAttribute("carts", carts);
 					}else {
 						response.setStatus(false);
-						response.setMessage("Cập nhật giỏ hàng không thành công !");
+						response.setMessage("Cập nhật giỏ hàng thất bại !");
 					}
 				}
 
