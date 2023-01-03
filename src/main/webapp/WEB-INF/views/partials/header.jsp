@@ -11,7 +11,7 @@
 						<div class="nav-wrapper flex-start">
 							<ul class="nav-list">
 								<li class="nav-item search-section"><a class="nav-link"
-									href="/products/search"> <span
+									href="<c:url value='/product/search.htm'/>"> <span
 										class="material-symbols-outlined" style="font-size: 28px">
 											search </span></a></li>
 							</ul>

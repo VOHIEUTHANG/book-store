@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import app.dao.CategoryDao;
 import app.dao.ProductDao;
 import app.dao.WishlistDao;
+import app.entity.Category;
 import app.entity.Product;
 import app.entity.User;
 import app.entity.Wishlist;
@@ -31,6 +33,8 @@ public class ProductController {
 	ProductDao productDao = new ProductDao();
 	WishlistDao wishlistDao = new WishlistDao();
 	ProductService productService = new ProductService();
+	CategoryDao categoryDao = new CategoryDao();
+	
 
 	@RequestMapping(value = "delete/{productID}", method = RequestMethod.GET)
 	public String deleteProduct(@PathVariable("productID") String productID) {
@@ -55,7 +59,16 @@ public class ProductController {
 		}
 		return "product-detail";
 	}
-
-
-
+	
+	@RequestMapping(value="search", method = RequestMethod.GET)
+	public String getAllProduct(ModelMap model) {
+		List<Category> categoryList = categoryDao.getFamousestCategory();
+		List<Product> productList = productDao.getAll();
+		
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("productList", productList);
+				
+		return "searching";
+	}
+	
 }

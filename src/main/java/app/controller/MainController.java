@@ -52,6 +52,11 @@ public class MainController {
 	public String getFormLogin() {
 		return "login";
 	}
+	
+	@RequestMapping("forgot-password")
+	public String getFormForgotPassword() {
+		return "forgot-password";
+	}
 
 	@RequestMapping("logout")
 	public String logout(HttpSession session) {

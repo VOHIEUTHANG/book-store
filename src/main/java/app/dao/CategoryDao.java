@@ -37,4 +37,14 @@ public class CategoryDao {
 		
 		return categorys;
 	}
+	
+	public List<Category> getFamousestCategory(){
+		Session session = factory.openSession();
+		String hql = "FROM Category";		
+		Query query = session.createQuery(hql);
+		query.setMaxResults(8);
+		List<Category> categorys = query.list();
+		
+		return categorys;
+	}
 }

@@ -16,39 +16,35 @@
 		<div class="login">
 			<div class="container">
 				<div class="login-wrapper">
-					<div class="login-title">Đăng nhập</div>
-					<div class="login-method-wrapper d-flex justify-content-center">
-						<div class="login-method-item">
-							<a href="#"> <i class="fa-brands fa-google"></i>
-							</a>
-						</div>
-						<div class="login-method-item">
-							<a href="#"> <i class="fa-brands fa-facebook"></i>
-							</a>
-						</div>
-					</div>
+					<div class="login-title">Quên mật khẩu !</div>
 					<div class="divider">
-						<div class="line"></div>
-						<div class="or">OR</div>
 					</div>
-					<div style="text-transform: initial">Đăng nhập với tài khoản:</div>
-					<form action="user/login.htm" id="form-login" method="post">
+					<div style="text-transform: initial">Nhập tên đăng nhập !</div>
+					<form action="<c:url value='user/sendMail.htm' />" id="form-login" method="post">
 						<div class="row form-container">
 							<div class="col-12">
 								<input class="input-feild" id="username" name="username"
 									placeholder="Tên đăng nhập" type="text" />
 							</div>
+						</div>
+											
+						<button type="submit" class="button button-full">SEND VERYFY CODE</button>
+							<p class="">${message1}</p>					
+					</form>
+					
+					<form action="user/login.htm" id="form-login" method="post">
+						<div class="row form-container">									
 							<div class="col-12">
-								<input class="input-feild" id="password" placeholder="Mật khẩu"
-									type="password" name="password" />
+								<input class="input-feild" id="code" name="code"
+									placeholder="Mã xác nhận" type="text" />
 							</div>
-						</div>
-						<div class="more-options">						
-						<a href="<c:url value='/forgot-password.htm'/>"
-							class="text--underline">Quên mật khẩu ?</a>
-						</div>
-						<button type="submit" class="button button-full">LOGIN</button>
-						<p class="text-danger">${message}</p>
+							<div class="col-12">
+								<input class="input-feild" id="newPassword" name="password"
+									placeholder="Mật khẩu mới" type="text" />
+							</div>						
+						</div>						
+						<button type="submit" class="button button-full">CHANGE PASSWORD</button>
+						<p class="text-danger">${message2}</p>
 					</form>
 					<div class="more-options">
 						<a href="<c:url value='/register.htm'/>" class="text--underline">Tạo

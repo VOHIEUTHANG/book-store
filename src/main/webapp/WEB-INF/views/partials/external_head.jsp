@@ -41,11 +41,27 @@
 	font-size: 16px;
 }
 
-.header__container {
-	width: 100vw;
-}
+	#main .all-products-area .product-img a{
+		justify-content: center;
+	}
+	
+	.product-img img{
+	width: 80%;
+	}
+	
+	#product-detail-page .product-details-tab.product-details-tab2{
+	flex-direction: column;
+	}
+	
+	#product-detail-page .product-details-tab.product-details-tab2{
+	max-width: 500px;
+	}
+	
+	.product-details-img-content{
+	 display:flex;
+	 justify-content: center;
+	}
+	
+	
 
-#root {
-	overflow: hidden;
-}
 </style>

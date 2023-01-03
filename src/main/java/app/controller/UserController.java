@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import javax.transaction.Transactional;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.Expose;
 
+import app.bean.Mailer;
 import app.commons.Response;
 import app.commons.UserInfo;
 import app.commons.UserResponse;
@@ -69,6 +72,10 @@ public class UserController {
 	AddressDao addressDao = new AddressDao();
 	OrderDao orderDao = new OrderDao();
 	CartDao cartDao = new CartDao();
+	UserDao userdao = new UserDao();
+
+	@Autowired
+	Mailer mailer;
 
 	@Autowired
 	ServletContext context;
@@ -95,7 +102,6 @@ public class UserController {
 			session.setAttribute("userEntity", user);
 			List<Cart> carts = cartDao.getByUsername(currentUser.getUsername());
 			session.setAttribute("carts", carts);
-			
 
 			if (user.getRole().getRole().equals("USER")) {
 				return "redirect:/index.htm";
@@ -355,13 +361,16 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "comment/delete/{commentID}", method = RequestMethod.GET)
-	public String deleteComment(@PathVariable("commentID") int commentID, HttpServletRequest request,HttpSession session) {		
+	public String deleteComment(@PathVariable("commentID") int commentID, HttpServletRequest request,
+			HttpSession session) {
 		User currentUser = (User) session.getAttribute("userEntity");
-		if(currentUser == null) return "403";
-		
+		if (currentUser == null)
+			return "403";
+
 		Boolean deleteResult = commentDao.deleteByID(commentID);
-		if(!deleteResult) return "404";
-		
+		if (!deleteResult)
+			return "404";
+
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
 	}
@@ -388,47 +397,50 @@ public class UserController {
 			throws Exception {
 		Response response = new Response();
 		User currentUser = (User) session.getAttribute("userEntity");
-		
+
 		DeliveryAddress address = new DeliveryAddress();
 		address.setAddressDetail(detailAddress);
 		address.setProvince(province);
 		address.setDistrict(district);
 		address.setWard(ward);
 		address.setUser_delivery(currentUser);
-		
+
 		Boolean insertResult = addressDao.insert(address);
-		
-		if(currentUser == null) {
+
+		if (currentUser == null) {
 			response.setStatus(false);
 			response.setMessage("Hết phiên đăng nhập, vui lòng đăng nhập lại!");
-		}else {
-			if(insertResult) {
+		} else {
+			if (insertResult) {
 				response.setStatus(true);
 				response.setMessage("Thêm địa chỉ thành công !");
-			}else {
+			} else {
 				response.setStatus(false);
 				response.setMessage("Thêm địa chỉ nhận hàng thất bại!");
 			}
 		}
-				
+
 		Gson gson = new GsonBuilder().create();
 		String jsonResponse = gson.toJson(response);
 		return jsonResponse;
 
 	}
-	
+
 	@RequestMapping(value = "delivery-address/delete/{addressID}", method = RequestMethod.GET)
-	public String deleteDeliveryAddress(@PathVariable("addressID") int addressID, HttpServletRequest request, HttpSession session) {		
+	public String deleteDeliveryAddress(@PathVariable("addressID") int addressID, HttpServletRequest request,
+			HttpSession session) {
 		User currentUser = (User) session.getAttribute("userEntity");
-		if(currentUser == null) return "403";
-		
+		if (currentUser == null)
+			return "403";
+
 		Boolean deleteResult = addressDao.deleteByID(addressID);
-		if(!deleteResult) return "404";
-		
+		if (!deleteResult)
+			return "404";
+
 		String referer = request.getHeader("Referer");
 		return "redirect:" + referer;
 	}
-	
+
 	@RequestMapping(value = "order", method = RequestMethod.GET)
 	public String getAllOrder(HttpSession session, ModelMap modelMap) {
 		User currentUser = (User) session.getAttribute("userEntity");
@@ -436,8 +448,40 @@ public class UserController {
 			return "403";
 
 		List<Order> orderList = orderDao.getByUsername(currentUser.getUsername());
-		modelMap.addAttribute("orderList", orderList);		
+		modelMap.addAttribute("orderList", orderList);
 		return "user-pages/purchase-order";
+	}
+
+	@RequestMapping(value="sendMail",method = RequestMethod.POST)
+	public String send(ModelMap model, @RequestParam("username") String username, HttpSession session) {
+		List<User> users = userdao.getUserByUsername(username);
+		String message = "";
+			
+		if (users.size() <= 0) {
+			message = "Không tìm thấy user với tên đăng nhập " + username + " !";
+			
+		} else {
+			String email = users.get(0).getEmail();
+			System.out.println(email);
+			if (email == null) {
+				message = "Tài khoản này không đăng ký email !";
+			} else {		
+				int randomNum = ThreadLocalRandom.current().nextInt(10000, 50000 + 1);
+				System.out.println(randomNum);
+				
+				try {
+					mailer.send("hieuthang369@gmail.com", email, "Cấp mã xác nhận để đổi mật khẩu mới !", " Mã xác nhận của bạn là " + randomNum);
+					message = "Gửi mã xác nhận đến email" + email + " thành công !";
+				} catch (Exception e) {
+					System.out.println(e);
+					message = "Gửi mã xác nhận đến email " + email + " xảy ra lỗi !";
+				}
+			}
+		}
+		
+		model.addAttribute("message1", message);
+
+		return "forgot-password";
 	}
 
 }
