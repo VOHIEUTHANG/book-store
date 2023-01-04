@@ -32,8 +32,8 @@ public class hibernateUtils {
 				Properties settings = new Properties();
 				settings.put(Environment.DRIVER, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
 				settings.put(Environment.URL, "jdbc:sqlserver://localhost:1433;databaseName=BookStore");
-				settings.put(Environment.USER, "devostack");
-				settings.put(Environment.PASS, "123123123");
+				settings.put(Environment.USER, "sa");
+				settings.put(Environment.PASS, "215531622");
 				settings.put(Environment.DIALECT, "org.hibernate.dialect.SQLServerDialect");
 				settings.put(Environment.SHOW_SQL, "false");
 				settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");

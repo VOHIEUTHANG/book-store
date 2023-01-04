@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -281,7 +282,7 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 					<div class="my-4">
-						<button type="button" class="btn btn-primary">Thêm sản phẩm</button>
+						<button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#add-product__modal">Thêm sản phẩm</button>
 					</div>
 					<div class="product-data-container">
 						<table class="table table-bordered">
@@ -340,6 +341,130 @@
 		class="fas fa-angle-up"></i>
 	</a>
 
+	<!-- Modal add product -->
+	<div class="modal fade" id="add-product__modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLongTitle">Thêm Sản Phẩm</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label class="col-md-12 control-label" for="product_id">Tên Sản Phẩm</label>  
+					<div class="col-md-12">
+					<input id="product_id" name="product_id" placeholder="Nhập tên sản phẩm" class="form-control input-md" required="" type="text">
+					  
+					</div>
+				  </div>
+				  
+				  <!-- Text input-->
+				  <div class="form-group">
+					<label class="col-md-12 control-label" for="product_name">Mô Tả Sản Phẩm</label>  
+					<div class="col-md-12">
+					<input id="product_name" name="product_name" placeholder="Nhập mô tả sản phẩm" class="form-control input-md" required="" type="text">
+					  
+					</div>
+				  </div>
+
+				  <div class="form-group">
+					<label class="col-md-12 control-label" for="product_inventory">Số lượng tồn kho</label>  
+					<div class="col-md-12">
+					<input id="product_inventory" name="product_inventory" placeholder="Nhập số lượng tồn kho" class="form-control input-md" required="" type="number">
+					</div>
+				  </div>
+
+				  <div class="form-group">
+					<label class="col-md-12 control-label" for="product_discount">Giảm Giá</label>  
+					<div class="col-md-12">
+					<input id="product_discount" name="product_discount" placeholder="Nhập phần trăm giảm giá" class="form-control input-md" required="" type="number">
+					</div>
+				  </div>
+
+				  <div class="form-group">
+					<label class="col-md-12 control-label" for="product_price">Giá Gốc</label>  
+					<div class="col-md-12">
+					<input id="product_price" name="product_price" placeholder="Nhập phần trăm giảm giá" class="form-control input-md" required="" type="number">
+					</div>
+				  </div>
+
+				  <div class="form-group">
+					<label class="col-md-12 control-label" for="product_year">Năm Xuất Bản</label>  
+					<div class="col-md-12">
+					<input id="product_year" name="product_year" placeholder="Nhập phần trăm giảm giá" class="form-control input-md" required="" type="number">
+					</div>
+				  </div>
+				  
+				  <!-- Select Basic -->
+				  <div class="form-group">
+					<label class="col-md-12 control-label" for="product_categories">Chọn Danh Mục</label>
+					<div class="col-md-12">
+					  <select id="product_categories" name="product_categories" class="form-control">
+						<c:forEach items="${categories}" var="c">
+							<option value="${c.id}">${c.categoryName}</option>
+						</c:forEach>
+					  </select>
+					</div>
+				  </div>
+
+				  <div class="form-group">
+					<label class="col-md-12 control-label" for="product_author">Chọn Tác Giả</label>
+					<div class="col-md-12">
+					  <select id="product_author" name="product_author" class="form-control">
+						<c:forEach items="${authors}" var="a">
+							<option value="${a.id}">${a.authorName}</option>
+						</c:forEach>
+					  </select>
+					</div>
+				  </div>
+
+				  <div class="form-group">
+					<label class="col-md-12 control-label" for="product_publisher">Chọn Nhà Xuất Bản</label>
+					<div class="col-md-12">
+					  <select id="product_publisher" name="product_publisher" class="form-control">
+						<c:forEach items="${publishers}" var="p">
+							<option value="${p.id}">${p.publisherName}</option>
+						</c:forEach>
+					  </select>
+					</div>
+				  </div>
+					  
+				   <!-- File Button --> 
+				  <div class="form-group">
+					<label class="col-md-6 control-label" for="file1">Ảnh 1</label>
+					<div class="col-md-6">
+					  <input id="file1" name="file_1" class="input-file" type="file">
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label class="col-md-6 control-label" for="file_2">Ảnh 2</label>
+					<div class="col-md-6">
+					  <input id="file_2" name="file_2" class="input-file" type="file">
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label class="col-md-6 control-label" for="file_3">Ảnh 3</label>
+					<div class="col-md-6">
+					  <input id="file_3" name="file_3" class="input-file" type="file">
+					</div>
+				  </div>
+				  <div class="form-group">
+					<label class="col-md-6 control-label" for="file_4">Ảnh 4</label>
+					<div class="col-md-6">
+					  <input id="file_4" name="file_4" class="input-file" type="file">
+					</div>
+				  </div>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+
 	<!-- Logout Modal-->
 	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -363,6 +488,10 @@
 		</div>
 	</div>
 
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 	<script src="resources/libs/jquery_3.6.min.js"></script>
 	<script src="resources/libs/boostrap.min.js"></script>

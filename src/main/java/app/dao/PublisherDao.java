@@ -29,11 +29,11 @@ public class PublisherDao {
 		}
 	}
 	
-	public List<PublisherDao> getAll(){
+	public List<Publisher> getAll(){
 		Session session = factory.openSession();
-		String hql = "FROM Category";
+		String hql = "FROM Publisher";
 		Query query = session.createQuery(hql);
-		List<PublisherDao> publishers = query.list();
+		List<Publisher> publishers = query.list();
 		
 		return publishers;
 	}
