@@ -141,34 +141,32 @@
 		<div class="header__menu">
 			<div class="menu-wrapper">
 				<ul class="menu-list">
-					<li class="menu-item"><a href="/products/search?brandID=6"
-						class="menu-link">nike</a></li>
-					<li class="menu-item"><a href="/products/search?brandID=1"
-						class="menu-link">adidas</a></li>
-					<li class="menu-item"><a href="/products/search?brandID=4"
-						class="menu-link">converse</a></li>
-					<li class="menu-item"><a href="/products/search?brandID=10"
-						class="menu-link">vans</a></li>
-					<li class="menu-item"><a href="#" class="menu-link">Danh
-							mục</a>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href=""><span>category
-										name</span></a></li>
-							<li><a class="dropdown-item" href=""><span>category
-										name</span></a></li>
-							<li><a class="dropdown-item" href=""><span>category
-										name</span></a></li>
-						</ul></li>
-					<li class="menu-item"><a href="#" class="menu-link">All
-							Brand</a>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href=""><span>Brand
-										name 1</span></a></li>
-							<li><a class="dropdown-item" href=""><span>Brand
-										name 2</span></a></li>
-						</ul></li>
-					<li class="menu-item" id="discount-btn"><a href=""
-						class="wow tada menu-link menu-link--sale">Discount</a></li>
+<!-- 					<li class="menu-item"><a href="/products/search?brandID=6" -->
+<!-- 						class="menu-link">nike</a></li> -->
+<!-- 					<li class="menu-item"><a href="/products/search?brandID=1" -->
+<!-- 						class="menu-link">adidas</a></li> -->
+<!-- 					<li class="menu-item"><a href="/products/search?brandID=4" -->
+<!-- 						class="menu-link">converse</a></li> -->
+<!-- 					<li class="menu-item"><a href="/products/search?brandID=10" -->
+<!-- 						class="menu-link">vans</a></li> -->
+<!-- 					<li class="menu-item"><a href="#" class="menu-link">Thể loại</a> -->
+<!-- 						<ul class="dropdown-menu"> -->
+<!-- 							<li><a class="dropdown-item" href=""><span>category -->
+<!-- 										name</span></a></li> -->
+<!-- 							<li><a class="dropdown-item" href=""><span>category -->
+<!-- 										name</span></a></li> -->
+<!-- 							<li><a class="dropdown-item" href=""><span>category -->
+<!-- 										name</span></a></li> -->
+<!-- 						</ul></li> -->
+<!-- 					<li class="menu-item"><a href="#" class="menu-link">Tác giả</a> -->
+<!-- 						<ul class="dropdown-menu"> -->
+<!-- 							<li><a class="dropdown-item" href=""><span>Brand -->
+<!-- 										name 1</span></a></li> -->
+<!-- 							<li><a class="dropdown-item" href=""><span>Brand -->
+<!-- 										name 2</span></a></li> -->
+<!-- 						</ul></li> -->
+<!-- 					<li class="menu-item" id="discount-btn"><a href="" -->
+<!-- 						class="wow tada menu-link menu-link--sale">Discount</a></li> -->
 				</ul>
 			</div>
 		</div>

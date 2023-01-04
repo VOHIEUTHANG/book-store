@@ -25,6 +25,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,7 +74,7 @@ public class UserController {
 	AddressDao addressDao = new AddressDao();
 	OrderDao orderDao = new OrderDao();
 	CartDao cartDao = new CartDao();
-	UserDao userdao = new UserDao();
+	UserDao userDao = new UserDao();
 
 	@Autowired
 	Mailer mailer;
@@ -452,34 +454,70 @@ public class UserController {
 		return "user-pages/purchase-order";
 	}
 
-	@RequestMapping(value="sendMail",method = RequestMethod.POST)
+	@RequestMapping(value = "sendMail", method = RequestMethod.POST)
 	public String send(ModelMap model, @RequestParam("username") String username, HttpSession session) {
-		List<User> users = userdao.getUserByUsername(username);
+		List<User> users = userDao.getUserByUsername(username);
 		String message = "";
-			
+
 		if (users.size() <= 0) {
 			message = "Không tìm thấy user với tên đăng nhập " + username + " !";
-			
+
 		} else {
 			String email = users.get(0).getEmail();
 			System.out.println(email);
 			if (email == null) {
 				message = "Tài khoản này không đăng ký email !";
-			} else {		
+			} else {
 				int randomNum = ThreadLocalRandom.current().nextInt(10000, 50000 + 1);
-				System.out.println(randomNum);
-				
 				try {
-					mailer.send("hieuthang369@gmail.com", email, "Cấp mã xác nhận để đổi mật khẩu mới !", " Mã xác nhận của bạn là " + randomNum);
+					mailer.send("hieuthang369@gmail.com", email, "Cấp mã xác nhận để đổi mật khẩu mới !",
+							" Mã xác nhận của bạn là " + randomNum);
 					message = "Gửi mã xác nhận đến email" + email + " thành công !";
+					session.setAttribute("forgotPassCode", randomNum);
+					session.setAttribute("username", username);
 				} catch (Exception e) {
 					System.out.println(e);
 					message = "Gửi mã xác nhận đến email " + email + " xảy ra lỗi !";
 				}
 			}
 		}
-		
+
 		model.addAttribute("message1", message);
+
+		return "forgot-password";
+	}
+
+	@RequestMapping(value = "get-new-pass", method = RequestMethod.POST)
+	public String changeNewPass(ModelMap model, @RequestParam("code") int code,
+			@RequestParam("password") String password, HttpSession session) throws Exception {
+		String message = "";
+//		validation ===>
+		if (password.trim().length() < 8) {
+			message = "Mật khẩu phải có tối thiểu 8 ký tự !";
+		} else {
+			int forgotPassCode = (int) session.getAttribute("forgotPassCode");
+			String username = (String) session.getAttribute("username");
+			if (code == forgotPassCode) {
+				List<User> users = userDao.getUserByUsername(username);
+				User user = users.get(0);
+				PasswordHandler pass = new PasswordHandler();
+				
+				String hashPass = pass.getHashPassword(password);
+				user.setPassword(hashPass);
+				Boolean updateResult = userDao.update(user);
+				
+				if(updateResult) {
+					message = "Thay đổi mật khẩu thành công !";
+				}else {
+					message = "Xảy ra lỗi khi thay đổi mật khẩu !";
+				}
+				
+			} else {
+				message = "Mã xác nhận không đúng, vui lòng thử lại !";
+			}
+
+			model.addAttribute("message2", message);
+		}
 
 		return "forgot-password";
 	}

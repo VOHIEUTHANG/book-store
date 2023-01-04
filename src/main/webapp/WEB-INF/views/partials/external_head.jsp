@@ -62,6 +62,11 @@
 	 justify-content: center;
 	}
 	
+	.all-product .product-img a{
+	 justify-content: center;
+	}
+	
+	
 	
 
 </style>

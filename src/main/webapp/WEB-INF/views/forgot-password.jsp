@@ -32,19 +32,19 @@
 							<p class="">${message1}</p>					
 					</form>
 					
-					<form action="user/login.htm" id="form-login" method="post">
+					<form action="<c:url value='user/get-new-pass.htm' />" id="form-login" method="post">
 						<div class="row form-container">									
 							<div class="col-12">
 								<input class="input-feild" id="code" name="code"
 									placeholder="Mã xác nhận" type="text" />
 							</div>
 							<div class="col-12">
-								<input class="input-feild" id="newPassword" name="password"
+								<input class="input-feild" type="password" id="newPassword" name="password"
 									placeholder="Mật khẩu mới" type="text" />
 							</div>						
 						</div>						
 						<button type="submit" class="button button-full">CHANGE PASSWORD</button>
-						<p class="text-danger">${message2}</p>
+						<p>${message2}</p>
 					</form>
 					<div class="more-options">
 						<a href="<c:url value='/register.htm'/>" class="text--underline">Tạo
